@@ -7,7 +7,7 @@
             <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
         {% endfor %}
 </small>
-<p>{{post.body | linebreaks}}</p>
+<p>{{post.body | safe }}</p>
 <h3>Leave a Comment</h3>
 <form action="" method="post">
     {% csrf_token %}
