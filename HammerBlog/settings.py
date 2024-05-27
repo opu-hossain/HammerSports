@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "Blog.apps.BlogConfig",
     "django_ckeditor_5",
     "ckeditor_uploader",
+    "taggit",
 ]
 
 MIDDLEWARE = [

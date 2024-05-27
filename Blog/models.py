@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.db.utils import IntegrityError
 from django_ckeditor_5.fields import CKEditor5Field
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -24,7 +25,7 @@ class Post(models.Model):
     last_modified = models.TimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
 
-    #Slugs
+    # Manual and Auto Slugs!
 
     slug = models.SlugField(unique=True, null=True, blank=True)
 
@@ -36,6 +37,9 @@ class Post(models.Model):
                 self.slug = '{}-{}'.format(slugify(self.title), num)
                 num += 1
         super().save(*args, **kwargs)
+
+    # Tags for every blog, taggit!
+    tags = TaggableManager(blank=True)
 
 
 
