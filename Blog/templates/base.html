@@ -7,11 +7,9 @@
     <title>Hammer Sports</title>
 </head>
 <body>
-    <h1>
-        Hammer Sports Blog!
-    </h1>
-    <a href="{% url "Blog_index" %}">Home</a>
-    <hr>
+<header>
+    <h1><a href="{% url "Blog_index" %}">Home</a></h1>
+</header>
     {% block page_title %}
 
     {% endblock page_title %}
