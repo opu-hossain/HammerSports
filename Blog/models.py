@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.text import slugify
+from django.db.utils import IntegrityError
 from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
@@ -14,15 +16,28 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=200)
     body = CKEditor5Field('Text', config_name='extends')
+    featured_image = models.ImageField(upload_to='featured_images/', null=True, blank=True)
+
     created_on = models.TimeField(auto_now=True)
     last_modified = models.TimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
 
+    #Slugs
+
+    slug = models.SlugField(unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+
 
     def __str__(self) -> str:
         return self.title
+
 
 
 class Comment(models.Model):

@@ -6,6 +6,9 @@
         {% for category in post.categories.all %}
             <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
         {% endfor %}
+        {% if post.featured_image %}
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+        {% endif %}
 </small>
 <p>{{post.body | safe }}</p>
 <h3>Leave a Comment</h3>

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from Blog.models import Post, Comment
 from django.http import HttpResponseRedirect
 from Blog.forms import CommentForm
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -25,8 +26,8 @@ def Blog_category(request , category):
     }
     return render(request, 'Blog/category.html', context)
 
-def Blog_details(request, pk):
-    post = Post.objects.get(pk=pk)
+def Blog_details(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     form = CommentForm()
     if request.method == "POST":
         form = CommentForm(request.POST)
