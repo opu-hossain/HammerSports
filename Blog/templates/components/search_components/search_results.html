@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+    {% for post in results %}
+        <h2><a href="{% url 'Blog_details' slug=post.slug %}">{{ post.title }}</a></h2>
+        <p>{{ post.content|truncatewords:50 }}</p>
+    {% empty %}
+        <p>It looks like there aren’t any ‘Blogs’ matches on this topic.</p>
+    {% endfor %}
+{% endblock page_content %}

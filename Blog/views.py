@@ -3,6 +3,7 @@ from Blog.models import Post, Comment
 from django.http import HttpResponseRedirect
 from Blog.forms import CommentForm
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 # Create your views here.
 
@@ -46,3 +47,14 @@ def Blog_details(request, slug):
         'form': CommentForm(),
     }
     return render(request, 'Blog/details.html', context)
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) | Q(body__icontains=query)
+    )
+    context = {
+        'results':results
+    }
+    return render(request, 'components/search_components/search_results.html', context)
