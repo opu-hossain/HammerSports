@@ -11,16 +11,20 @@ class CategoryAdmin(admin.ModelAdmin):
 class CommentsAdmin(admin.ModelAdmin):
     pass
 
-class PostAdminForm(forms.ModelForm):
-    body = forms.CharField(widget=CKEditorWidget())
 
-    class Meta:
-        model = Post
-        fields = '__all__'
+
+class PostAdminForm(forms.ModelForm):
+    # body = forms.CharField(widget=CKEditorWidget())
+
+    # class Meta:
+    #     model = Post
+    #     fields = '__all__'
+
+    pass
 
 class PostAdmin(admin.ModelAdmin):
-    form = PostAdminForm
-
+    # form = PostAdminForm
+    pass
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)

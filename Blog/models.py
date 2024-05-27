@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
 
@@ -15,7 +15,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
-    body = RichTextField()
+    body = CKEditor5Field('Text', config_name='extends')
     created_on = models.TimeField(auto_now=True)
     last_modified = models.TimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")

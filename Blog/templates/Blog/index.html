@@ -16,7 +16,7 @@
                 <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
             {% endfor %}
         </small>
-        <p>{{ post.body | slice:":400" }}...</p>
+        <p>{{ post.body|striptags|escape|slice:":400" }}...</p>
         {% endfor %}
     {% endblock posts %}
 
