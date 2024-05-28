@@ -8,23 +8,39 @@
 </head>
 <body>
 <header>
-
-    <h1><a href="{% url "Blog_index" %}">Home</a></h1>
-    <h1>
-        <a href="{% url "Blog_index" %}">HammerSports</a>
-    </h1>
-    <form method="GET" action="{% url 'search' %}">
-        <input type="text" name="q" placeholder="Search...">
-        <input type="submit" value="Search">
-    </form>
-
+    <!-- To Do: Needs Better Styling, mus make a Sticky Header with other styles -->
+    <div class="header-content">
+        <h1>
+            <a href="{% url "Blog_index" %}">HammerSports</a>
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="{% url "Blog_index" %}">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <form method="GET" action="{% url 'search' %}">
+            <input type="text" name="q" placeholder="Search...">
+            <input type="submit" value="Search">
+        </form>
+    </div>
 </header>
-    {% block page_title %}
 
-    {% endblock page_title %}
+{% block page_title %}
 
-    {% block page_content %}
+{% endblock page_title %}
 
-    {% endblock page_content %}
+{% block page_content %}
+
+{% endblock page_content %}
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2022 Hammer Sports. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+</footer>
+
 </body>
 </html>

@@ -1,26 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block page_content %}
 
-{% block page_title %}
-    <h2>
-        Blog Posts
-    </h2>
-{% endblock page_title %}
+<div class="title">
+    <h2>Blog Posts</h2>
+</div>
 
-{%  block page_content %}
-    {% block posts %}
-        {% for post in posts %}
+{% for post in posts %}
+    <article>
         <h3><a href="{% url 'Blog_details' slug=post.slug %}">{{ post.title }}</a></h3>
-        {% if post.featured_image %}
-            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
-        {% endif %}
         <small>
-            {{post.created_on.date}} | Categories:
-            {% for category in post.categories.all %}
-                <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
-            {% endfor %}
+            {{post.created_on.date}} | Categories: 
+                {% for category in post.categories.all %}
+                    <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
+                {% endfor %}
+                {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                {% endif %}
         </small>
         <p>{{ post.body|striptags|escape|slice:":400" }}...</p>
-        {% endfor %}
-    {% endblock posts %}
+        <p>Tags: {% for tag in post.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    </article>
+{% endfor %}
 
-{% endblock page_content %}
+{% endblock %}
