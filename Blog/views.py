@@ -40,10 +40,29 @@ def Blog_details(request, slug):
             )
             comment.save()
             return HttpResponseRedirect(request.path_info)
+
     comments = Comment.objects.filter(post=post)
 
     post_tags = post.tags.values_list('id', flat=True)
-    related_posts = Post.objects.filter(tags__in=post_tags).exclude(id=post.id).distinct()
+    post_categories = post.categories.values_list('id', flat=True)
+    
+    # Get the slug of the previous post from the session
+    previous_slug = request.session.get('previous_slug')
+
+    related_posts = Post.objects.filter(
+        Q(categories__in=post_categories) |
+        Q(tags__in=post_tags) |
+        Q(title__icontains=post.title)
+    ).exclude(id=post.id)
+
+    # Exclude the previous post if it exists
+    if previous_slug:
+        related_posts = related_posts.exclude(slug=previous_slug)
+
+    related_posts = related_posts.distinct()[:2]
+
+    # Store the current post's slug in the session
+    request.session['previous_slug'] = slug
 
 
     context = {
