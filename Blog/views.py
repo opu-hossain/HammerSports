@@ -41,10 +41,16 @@ def Blog_details(request, slug):
             comment.save()
             return HttpResponseRedirect(request.path_info)
     comments = Comment.objects.filter(post=post)
+
+    post_tags = post.tags.values_list('id', flat=True)
+    related_posts = Post.objects.filter(tags__in=post_tags).exclude(id=post.id).distinct()
+
+
     context = {
         'post': post,
         'comments': comments,
         'form': CommentForm(),
+        'related_posts': related_posts,
     }
     return render(request, 'Blog/details.html', context)
 

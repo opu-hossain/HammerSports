@@ -19,6 +19,7 @@
     <p>Tags: {% for tag in post.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 </article>
 
+
 <section>
     <h3>Leave a Comment</h3>
     <form action="" method="post">
@@ -27,6 +28,19 @@
             <div>{{form.body}}</div>
             <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+</section>
+<section>
+    <h3>Related Posts:</h3>
+    {% for related_post in related_posts|slice:":2" %}
+        <article>
+            <h2><a href="{% url 'Blog_details' slug=related_post.slug %}">{{ related_post.title }}</a></h2>
+            {% if related_post.featured_image %}
+                <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}">
+            {% endif %}
+        </article>
+    {% empty %}
+        <p>No related posts found.</p>
+    {% endfor %}
 </section>
 
 <section>
