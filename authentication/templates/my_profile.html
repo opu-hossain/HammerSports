@@ -4,6 +4,10 @@
 
 {% block page_content %}
     <h1>{{ user.username }}'s Profile</h1>
+    <!-- Add the "Update Profile" button here -->
+    {% if user == profile_user %}
+        <a href="{% url 'profile_update' %}"><button>Update Profile</button></a>
+    {% endif %}
     <p>Email: {{ user.email }}</p>
 
     {% if user.has_profile_image %}

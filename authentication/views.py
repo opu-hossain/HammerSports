@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from .models import CustomUser
 from .forms import CustomUserCreationForm, ProfileUpdateForm
 from django.contrib import messages
+from django.urls import reverse
 
 
 
@@ -68,12 +69,14 @@ def my_profile(request):
 
 @login_required
 def profile_update(request):
+    user = request.user
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=user)
         if form.is_valid():
-            form.save()
-            return redirect('profile')
+            changed_fields = form.changed_data  # Get the fields that have been changed
+            user = form.save(commit=False)  # Don't save the form yet
+            user.save(update_fields=changed_fields)  # Save only the changed fields
+            return redirect(reverse('profile', kwargs={'username': user.username}))
     else:
-        form = ProfileUpdateForm(instance=request.user)
+        form = ProfileUpdateForm(instance=user)
     return render(request, 'profile_update.html', {'form':form})
-

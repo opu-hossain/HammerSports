@@ -2,9 +2,21 @@
 
 {% block page_content %}
     <h2>Update Profile</h2>
-        <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="{{ form.email.id_for_label }}">Email (current: {{ form.instance.email }})</label>
+            <input type="email" name="{{ form.email.html_name }}" class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.instance.email }}">
+        </p>
+        <p>
+            <label for="{{ form.first_name.id_for_label }}">First Name (current: {{ form.instance.first_name }})</label>
+            <input type="text" name="{{ form.first_name.html_name }}" class="form-control" id="{{ form.first_name.id_for_label }}" value="{{ form.instance.first_name }}">
+        </p>
+        <p>
+            <label for="{{ form.last_name.id_for_label }}">Last Name (current: {{ form.instance.last_name }})</label>
+            <input type="text" name="{{ form.last_name.html_name }}" class="form-control" id="{{ form.last_name.id_for_label }}" value="{{ form.instance.last_name }}">
+        </p>
+        <p>{{ form.profile_image.label_tag }} {{ form.profile_image }}</p>
         <button type="submit">Update</button>
     </form>
-{% endblock page_content %}
+{% endblock %}

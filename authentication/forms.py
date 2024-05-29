@@ -44,21 +44,10 @@ class CustomUserChangeForm(UserChangeForm):
         fields = UserChangeForm.Meta.fields
 
 class ProfileUpdateForm(forms.ModelForm):
-    username = forms.CharField(
-        max_length=150,
-        required=True,
-        help_text="",
-        validators=[validate_slug],
-    )
     class Meta:
         model = CustomUser
-        fields = ['username', 'first_name', 'last_name', 'email', 'profile_image']
-    
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if '@' in username or '/' in username:
-            raise ValidationError("Username should not contain '@' or '/' characters.")
-        username = '@' + username
-        if CustomUser.objects.filter(username=username).exists():
-            raise ValidationError("Username already exists!")
-        return username
+        fields = ['first_name', 'last_name', 'email', 'profile_image']  # Removed 'username'
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = False
