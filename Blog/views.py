@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from Blog.models import Post, Comment
+from Blog.models import Post, Comment, Category
 from django.http import HttpResponseRedirect
 from Blog.forms import CommentForm
 from django.shortcuts import get_object_or_404
@@ -21,9 +21,18 @@ def Blog_category(request , category):
     posts = Post.objects.filter(
         categories__name__contains = category
     ).order_by("-created_on")
+    category_obj = get_object_or_404(Category, name=category)
+
+    if request.method == 'POST' and request.user.is_authenticated:
+        if 'follow' in request.POST:
+            request.user.followed_categories.add(category_obj)
+            messages.success(request, f"You are now following {category_obj.name}.")
+        elif 'unfollow' in request.POST:
+            request.user.followed_categories.remove(category_obj)
+            messages.success(request, f"You have unfollowed {category_obj.name}.")
 
     context = {
-        'category': category,
+        'category': category_obj,
         'posts': posts,
     }
     return render(request, 'Blog/category.html', context)

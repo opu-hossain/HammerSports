@@ -2,4 +2,14 @@
 
 {% block page_title %}
     <h2>{{category}}</h2>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {% if category in user.followed_categories.all %}
+                <button type="submit" name="unfollow">Unfollow</button>
+            {% else %}
+                <button type="submit" name="follow">Follow</button>
+            {% endif %}
+        </form>
+    {% endif %}
 {% endblock %}
