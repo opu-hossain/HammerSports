@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from Blog.forms import CommentForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.contrib import messages
 
 # Create your views here.
 
@@ -31,15 +32,18 @@ def Blog_details(request, slug):
     post = get_object_or_404(Post, slug=slug)
     form = CommentForm()
     if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = Comment(
-                author=form.cleaned_data["author"],
-                body=form.cleaned_data["body"],
-                post=post,
-            )
-            comment.save()
-            return HttpResponseRedirect(request.path_info)
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = Comment(
+                    author=request.user,
+                    body=form.cleaned_data["body"],
+                    post=post,
+                )
+                comment.save()
+                return HttpResponseRedirect(request.path_info)
+        else:
+            messages.add_message(request, messages.ERROR, 'You must be logged in to comment.')
 
     comments = Comment.objects.filter(post=post)
 

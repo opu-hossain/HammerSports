@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+  <h1>{{ profile_user.username }}'s Profile</h1>
+  <p>Email: {{ profile_user.email }}</p>
+
+  {% if profile_user.profile_image %}
+    <img src="{{ profile_user.profile_image.url }}" alt="{{ profile_user.username }}">
+  {% else %}
+    <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ profile_user.username }}">
+  {% endif %}
+{% endblock page_content %}

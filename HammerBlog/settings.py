@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "Blog.apps.BlogConfig",
+    "authentication.apps.AuthenticationConfig",
     "django_ckeditor_5",
     "ckeditor_uploader",
     "taggit",
@@ -75,6 +76,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "HammerBlog.wsgi.application"
+# Custom Backends Settings
+AUTHENTICATION_BACKENDS = ['HammerBlog.backends.CustomUserModelBackend']
 
 
 # Database
@@ -90,7 +93,8 @@ DATABASES = {
         'PORT': '25126',
     }
 }
-
+# Account management
+AUTH_USER_MODEL = 'authentication.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -127,6 +131,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static_files',
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
