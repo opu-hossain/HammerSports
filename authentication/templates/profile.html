@@ -3,11 +3,20 @@
 
 {% block page_content %}
   <h1>{{ profile_user.username }}'s Profile</h1>
-  <p>Email: {{ profile_user.email }}</p>
 
   {% if profile_user.profile_image %}
     <img src="{{ profile_user.profile_image.url }}" alt="{{ profile_user.username }}">
   {% else %}
     <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ profile_user.username }}">
   {% endif %}
+
+  <h3>Followed Categories:</h3>
+  <ul>
+    {% for category in followed_categories %}
+      <li>{{ category.name }}</li>
+    {% empty %}
+      <li>This user is not following any categories.</li>
+    {% endfor %}
+  </ul>
+  
 {% endblock page_content %}

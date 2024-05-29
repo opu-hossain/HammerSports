@@ -35,8 +35,16 @@ def login_view(request):
     return render(request, 'login.html')
 
 def profile(request, username):
-    user = get_object_or_404(CustomUser, username=username)
-    return render(request, 'profile.html', {'profile_user': user})
+    profile_user = get_object_or_404(CustomUser, username=username)
+    followed_categories = profile_user.followed_categories.all()
+    print(followed_categories)
+    print(followed_categories.count())
+
+    context = {
+        'profile_user': profile_user,
+        'followed_categories': followed_categories,
+    }
+    return render(request, 'profile.html', context)
 
 @login_required
 def logout_view(request):
@@ -45,7 +53,18 @@ def logout_view(request):
 
 @login_required
 def my_profile(request):
-    return render(request, 'my_profile.html', {'user': request.user})
+    if request.user.is_authenticated:
+        followed_categories = request.user.followed_categories.all()
+
+        context = {
+            'profile_user': request.user,
+            'followed_categories': followed_categories,
+        }
+        return render(request, 'my_profile.html', context)
+    else:
+        messages.error(request, 'You must be logged in to view this page.')
+        return redirect('login') 
+    # return render(request, 'my_profile.html', {'user': request.user})
 
 @login_required
 def profile_update(request):

@@ -27,9 +27,11 @@ def Blog_category(request , category):
         if 'follow' in request.POST:
             request.user.followed_categories.add(category_obj)
             messages.success(request, f"You are now following {category_obj.name}.")
+            
         elif 'unfollow' in request.POST:
             request.user.followed_categories.remove(category_obj)
             messages.success(request, f"You have unfollowed {category_obj.name}.")
+
 
     context = {
         'category': category_obj,
