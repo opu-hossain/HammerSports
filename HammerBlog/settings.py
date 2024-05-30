@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "ckeditor_uploader",
     "taggit",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "HammerBlog.urls"
@@ -77,7 +79,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "HammerBlog.wsgi.application"
 # Custom Backends Settings
-AUTHENTICATION_BACKENDS = ['HammerBlog.backends.CustomUserModelBackend']
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'HammerBlog.backends.CustomUserModelBackend',
+]
 
 
 # Database
@@ -248,5 +253,14 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
+# Axes Spam Filtering
 
+AXES_FAILURE_LIMIT = 5  # The number of login attempts allowed before a record is created for the failed logins. Default is 5.
+AXES_COOLOFF_TIME = 1   # The length of the period during which a user will be locked out. Default is None (users are locked out indefinitely).
 
+# AXES_LOCK_OUT_AT_FAILURE = True  # If set to True, lock out the user after AXES_FAILURE_LIMIT attempts. Default is True.
+# AXES_USE_USER_AGENT = True  # If set to True, lockouts will be based on a combination of IP and user agent. This means that a user can be locked out on one browser but still able to log in on another. Default is False.
+# AXES_LOCKOUT_TEMPLATE = 'myapp/lockout.html'  # If set, this template will be used for the lockout page. Default is None, which means a simple text message will be displayed.
+# AXES_LOCKOUT_URL = '/locked-out/'  # If set, users will be redirected to this URL when they are locked out. Default is None.
+# AXES_VERBOSE = True  # If set to True, log more information about failed logins. Default is False.
+# AXES_DISABLE_ACCESS_LOG = False  # If set to True, disable logging of successful logins. Default is False.

@@ -165,3 +165,4 @@ media/
 static/
 static_files/
 Blog/migrations/
+authentication/migrations/

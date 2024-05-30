@@ -61,8 +61,60 @@
             {% endif %}
             <p>On {{ comment.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=comment.author.username %}"><b>{{ comment.author.username }}</b></a> wrote:</p>
             <p>{{ comment.body | linebreaks }}</p>
+            {% if user.is_superuser or user.is_staff %}
+                {% if not comment.approved %}
+                    <form method="post" action="{% url 'comment_approve' comment.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                    </form>
+                {% else %}
+                    <p>Approved ✔</p>
+                {% endif %}
+            {% endif %}
+            <button class="reply-button">Reply</button>
+            <div class="reply-form" style="display: none;">
+                <form method="post" action="{% url 'comment_create' post.slug %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <textarea name="body" required></textarea>
+                    <button type="submit">Submit Reply</button>
+                </form>
+            </div>
+            {% if comment.replies %}
+                <div class="replies">
+                    {% for reply in comment.replies.all %}
+                        <article class="reply">
+                            {% if reply.author.has_profile_image %}
+                                <img src="{{ reply.author.profile_image.url }}" alt="{{ reply.author.username }}">
+                            {% else %}
+                                <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ reply.author.username }}">
+                            {% endif %}
+                            <p>On {{ reply.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=reply.author.username %}"><b>{{ reply.author.username }}</b></a> replied:</p>
+                            <p>{{ reply.body | linebreaks }}</p>
+                            {% if user.is_superuser or user.is_staff %}
+                                {% if not reply.approved %}
+                                    <form method="post" action="{% url 'reply_approve' reply.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Approve</button>
+                                    </form>
+                                {% else %}
+                                    <p>Approved ✔</p>
+                                {% endif %}
+                            {% endif %}
+                        </article>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </article>
     {% endfor %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.reply-button').click(function() {
+                $(this).next('.reply-form').show();
+            });
+        });
+        </script>
 </section>
 
 {% endblock page_content %}

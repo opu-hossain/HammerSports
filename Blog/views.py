@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from Blog.models import Post, Comment, Category
 from django.http import HttpResponseRedirect
 from Blog.forms import CommentForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
+
+
+
 
 # Create your views here.
 
@@ -56,7 +60,7 @@ def Blog_details(request, slug):
         else:
             messages.add_message(request, messages.ERROR, 'You must be logged in to comment.')
 
-    comments = Comment.objects.filter(post=post)
+    comments = Comment.objects.filter(approved=True)
 
     post_tags = post.tags.values_list('id', flat=True)
     post_categories = post.categories.values_list('id', flat=True)
@@ -79,6 +83,12 @@ def Blog_details(request, slug):
     # Store the current post's slug in the session
     request.session['previous_slug'] = slug
 
+    # Filter comments based on approved status and user's superuser status
+    if request.user.is_superuser:
+        comments = Comment.objects.filter(post=post)
+    else:
+        comments = Comment.objects.filter(post=post, approved=True)
+
 
     context = {
         'post': post,
@@ -98,3 +108,51 @@ def search(request):
         'results':results
     }
     return render(request, 'components/search_components/search_results.html', context)
+
+
+def comment_create(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            # Spam Check Algorithm will be used here
+            comment.post = post
+            comment.author = request.user
+            parent_id = request.POST.get('parent_id')
+            if parent_id:
+                parent_obj = Comment.objects.get(id=parent_id)
+                comment.parent = parent_obj
+            comment.save()
+            return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+    else:
+        form = CommentForm()
+    return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+
+def comment_thread(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    post = comment.post
+    return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+
+
+@login_required
+def comment_approve(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    if request.user.is_superuser:
+        comment.approved = True
+        comment.save()
+        return redirect('Blog_details', slug=comment.post.slug)
+    else:
+        messages.error(request, 'You do not have permission to approve comments.')
+        return redirect('Blog_details', slug=comment.post.slug)
+    
+@login_required
+def reply_approve(request, id):
+    reply = get_object_or_404(Comment, id=id)
+    if request.user.is_superuser or request.user.is_staff:
+        reply.approved = True
+        reply.save()
+        return redirect('Blog_details', slug=reply.post.slug)
+    else:
+        messages.error(request, 'You do not have permission to approve replies.')
+        return redirect('Blog_details', slug=reply.post.slug)

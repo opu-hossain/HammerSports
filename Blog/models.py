@@ -54,6 +54,8 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    approved = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.author} on '{self.post}'"
