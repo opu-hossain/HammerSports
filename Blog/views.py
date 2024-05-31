@@ -1,19 +1,20 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from Blog.models import Post, Comment, Category
 from django.http import HttpResponseRedirect
-from Blog.forms import CommentForm
+from Blog.forms import CommentForm, BlogPostForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 
-
+def is_admin(user):
+    return user.is_superuser
 
 
 # Create your views here.
 
 def Blog_index(request):
-    posts = Post.objects.all().order_by("-created_on").prefetch_related('categories')
+    posts = Post.objects.filter(approved=True).order_by("-created_on").prefetch_related('categories')
 
     context = {
         'posts': posts,
@@ -156,3 +157,32 @@ def reply_approve(request, id):
     else:
         messages.error(request, 'You do not have permission to approve replies.')
         return redirect('Blog_details', slug=reply.post.slug)
+
+# i need to work on this later
+@user_passes_test(is_admin) 
+@login_required
+def approve_blog_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.user.is_superuser or request.user.is_staff:
+        post.approved = True
+        post.save()
+        messages.success(request, 'The blog post has been approved.')
+    else:
+        messages.error(request, 'You do not have permission to approve blog posts.')
+    return redirect('Blog_details', slug=post.slug)
+
+@login_required
+def create_blog_post(request):
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            form.save_m2m()
+            messages.success(request, 'Your blog post has been published.')
+            return redirect('Blog_details', slug=post.slug)
+    else:
+        form = BlogPostForm()
+
+    return render(request, 'components/user/blog_post.html', {'form': form})

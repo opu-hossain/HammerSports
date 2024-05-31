@@ -7,8 +7,12 @@
     <!-- Add the "Update Profile" button here -->
     {% if user == profile_user %}
         <a href="{% url 'profile_update' %}"><button>Update Profile</button></a>
+        <a href="{% url 'view_my_posts' %}"><button>My Posts</button></a>
     {% endif %}
     <p>Email: {{ user.email }}</p>
+    <section>
+        <p>Bio: {{ user.bio }}</p>
+    </section>
 
     {% if user.has_profile_image %}
         <img src="{{ user.profile_image.url }}" alt="{{ user.username }}">

@@ -44,6 +44,7 @@
             {% if related_post.featured_image %}
                 <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}">
             {% endif %}
+            <p>{{ post.author.bio }}</p>
         </article>
     {% empty %}
         <p>No related posts found.</p>

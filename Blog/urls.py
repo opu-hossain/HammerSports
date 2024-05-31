@@ -10,4 +10,6 @@ urlpatterns = [
     path("post/<slug:slug>/comment/create/", views.comment_create, name='comment_create'),
     path("comment/<int:id>/approve/", views.comment_approve, name='comment_approve',),
     path("reply/<int:id>/approve/", views.reply_approve, name='reply_approve'),
+    path('create_post/', views.create_blog_post, name='create_blog_post'),
+    path('approve_post/<int:post_id>/', views.approve_blog_post, name='approve_blog_post'),
 ]

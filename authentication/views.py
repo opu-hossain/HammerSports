@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import CustomUser
+from Blog.models import Post
 from .forms import CustomUserCreationForm, ProfileUpdateForm
 from django.contrib import messages
 from django.urls import reverse
@@ -80,3 +81,14 @@ def profile_update(request):
     else:
         form = ProfileUpdateForm(instance=user)
     return render(request, 'profile_update.html', {'form':form})
+
+def view_my_posts(request):
+    approved_posts = Post.objects.filter(user=request.user, approved=True)
+    pending_posts = Post.objects.filter(user=request.user, approved=False)
+
+    context = {
+        'approved_posts': approved_posts,
+        'pending_posts': pending_posts,
+    }
+
+    return render(request, 'view_my_posts.html', context)

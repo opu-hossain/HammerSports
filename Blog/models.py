@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.db.utils import IntegrityError
@@ -18,13 +19,15 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200)
     body = CKEditor5Field('Text', config_name='extends')
     featured_image = models.ImageField(upload_to='featured_images/', null=True, blank=True)
-
     created_on = models.TimeField(auto_now=True)
     last_modified = models.TimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
+    approved = models.BooleanField(default=False)
+    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     # Manual and Auto Slugs!
 

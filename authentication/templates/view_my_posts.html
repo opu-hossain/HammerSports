@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    <div id="user-posts">
+        <h1>{{ user.username }}'s Posts</h1>
+
+        <div id="approved-posts">
+            <h2>Approved Posts</h2>
+            {% for post in approved_posts %}
+                <div class="post">
+                    <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
+                    <p>{{ post.body|truncatewords:30|safe }}</p>
+                </div>
+            {% empty %}
+                <p>You have no approved posts.</p>
+            {% endfor %}
+        </div>
+
+        <div id="pending-posts">
+            <h2>Pending Posts</h2>
+            {% for post in pending_posts %}
+                <div class="post">
+                    <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
+                    <p>{{ post.body|truncatewords:30|safe }}</p>
+                </div>
+            {% empty %}
+                <p>You have no pending posts.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

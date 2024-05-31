@@ -46,7 +46,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'email', 'profile_image']  # Removed 'username'
+        fields = ['first_name', 'last_name', 'email', 'profile_image', 'bio']  # Removed 'username'
 
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)

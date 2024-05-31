@@ -7,6 +7,11 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 
 # Register your models here.
+def approve_posts(modeladmin, request, queryset):
+    queryset.update(approved=True)
+
+approve_posts.short_description = "Approve selected posts"
+
 
 class CategoryAdmin(admin.ModelAdmin):
     pass
@@ -17,13 +22,9 @@ class CommentsAdmin(admin.ModelAdmin):
 
 
 class PostAdminForm(forms.ModelForm):
-    # body = forms.CharField(widget=CKEditorWidget())
-
-    # class Meta:
-    #     model = Post
-    #     fields = '__all__'
-
-    pass
+    list_display = ['title', 'author', 'approved']
+    ordering = ['approved', 'title']
+    actions = [approve_posts]
 
 class PostAdmin(admin.ModelAdmin):
     # form = PostAdminForm
@@ -61,6 +62,8 @@ class CommentsAdmin(admin.ModelAdmin):
             object_repr=object_repr,
             action_flag=DELETION,
         )
+
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
