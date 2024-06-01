@@ -72,7 +72,8 @@ def Blog_details(request, slug):
     related_posts = Post.objects.filter(
         Q(categories__in=post_categories) |
         Q(tags__in=post_tags) |
-        Q(title__icontains=post.title)
+        Q(title__icontains=post.title),
+        approved=True
     ).exclude(id=post.id)
 
     # Exclude the previous post if it exists
@@ -181,7 +182,7 @@ def create_blog_post(request):
             post.save()
             form.save_m2m()
             messages.success(request, 'Your blog post has been published.')
-            return redirect('Blog_details', slug=post.slug)
+            return redirect('view_my_posts')
     else:
         form = BlogPostForm()
 

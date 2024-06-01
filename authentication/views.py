@@ -39,14 +39,27 @@ def login_view(request):
 def profile(request, username):
     profile_user = get_object_or_404(CustomUser, username=username)
     followed_categories = profile_user.followed_categories.all()
-    print(followed_categories)
-    print(followed_categories.count())
+
+    # Approved posts
+    approved_posts = Post.objects.filter(user=profile_user, approved=True)
 
     context = {
         'profile_user': profile_user,
         'followed_categories': followed_categories,
+        'approved_posts': approved_posts,
     }
     return render(request, 'profile.html', context)
+
+def view_my_posts(request):
+    approved_posts = Post.objects.filter(user=request.user, approved=True)
+    pending_posts = Post.objects.filter(user=request.user, approved=False)
+
+    context = {
+        'approved_posts': approved_posts,
+        'pending_posts': pending_posts,
+    }
+
+    return render(request, 'view_my_posts.html', context)
 
 @login_required
 def logout_view(request):
@@ -82,13 +95,3 @@ def profile_update(request):
         form = ProfileUpdateForm(instance=user)
     return render(request, 'profile_update.html', {'form':form})
 
-def view_my_posts(request):
-    approved_posts = Post.objects.filter(user=request.user, approved=True)
-    pending_posts = Post.objects.filter(user=request.user, approved=False)
-
-    context = {
-        'approved_posts': approved_posts,
-        'pending_posts': pending_posts,
-    }
-
-    return render(request, 'view_my_posts.html', context)

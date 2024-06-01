@@ -21,6 +21,14 @@
     <p>Tags: {% for tag in post.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 </article>
 
+<section>
+    <div id="author-section">
+        <h2>About the Author</h2>
+        <img src="{{ post.user.profile_image.url }}" alt="{{ post.user.first_name }} {{ post.user.last_name }}">
+        <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+        <p>{{ post.user.bio }}</p>
+    </div>
+</section>
 
 <section>
     <h3>Leave a Comment</h3>
@@ -44,7 +52,7 @@
             {% if related_post.featured_image %}
                 <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}">
             {% endif %}
-            <p>{{ post.author.bio }}</p>
+            <p>{{ post.user.bio }}</p>
         </article>
     {% empty %}
         <p>No related posts found.</p>

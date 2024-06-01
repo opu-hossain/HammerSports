@@ -9,7 +9,7 @@
             {% for post in approved_posts %}
                 <div class="post">
                     <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
-                    <p>{{ post.body|truncatewords:30|safe }}</p>
+                    <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
                 </div>
             {% empty %}
                 <p>You have no approved posts.</p>
@@ -21,7 +21,7 @@
             {% for post in pending_posts %}
                 <div class="post">
                     <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
-                    <p>{{ post.body|truncatewords:30|safe }}</p>
+                    <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
                 </div>
             {% empty %}
                 <p>You have no pending posts.</p>
