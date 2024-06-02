@@ -163,6 +163,7 @@ cython_debug/
 
 media/
 static/
-static_files/
+# static_files/
+node_modules/
 Blog/migrations/
 authentication/migrations/

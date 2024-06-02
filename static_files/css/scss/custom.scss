@@ -1,0 +1,20 @@
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+  background-color: $primary-color;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li { display: inline-block; }
+  a {
+    text-decoration: none;
+    &:hover { color: $secondary-color; }
+  }
+}
