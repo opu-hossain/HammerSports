@@ -12,4 +12,6 @@ urlpatterns = [
     path("reply/<int:id>/approve/", views.reply_approve, name='reply_approve'),
     path('create_post/', views.create_blog_post, name='create_blog_post'),
     path('approve_post/<int:post_id>/', views.approve_blog_post, name='approve_blog_post'),
+    path('post/<slug:slug>/edit/', views.edit_post, name='edit_post'),
+    path('post/<slug:slug>/delete/', views.delete_post, name='delete_post'),
 ]

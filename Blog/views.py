@@ -187,3 +187,36 @@ def create_blog_post(request):
         form = BlogPostForm()
 
     return render(request, 'components/user/blog_post.html', {'form': form})
+
+@login_required
+def edit_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            # Update only the modified fields
+            for field in form.changed_data:
+                if field in ['categories', 'tags']:
+                    getattr(post, field).set(form.cleaned_data[field])
+                else:
+                    setattr(post, field, form.cleaned_data[field])
+            post.save()
+            return redirect('view_my_posts')
+        else:
+            return render(request, 'components/user/blog_update.html', {'form': form, 'post': post, 'edit_mode': True, 'errors': form.errors})
+    else:
+        form = BlogPostForm(instance=post)
+
+    return render(request, 'components/user/blog_update.html', {'form': form, 'post': post, 'edit_mode': True})
+
+@login_required
+def delete_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Your post was successfully deleted.')
+        return redirect('view_my_posts')
+
+    return render(request, 'components/user/blog_delete.html', {'post': post})

@@ -3,6 +3,11 @@
 {% block page_content %}
     <div id="user-posts">
         <h1>{{ user.username }}'s Posts</h1>
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
 
         <div id="approved-posts">
             <h2>Approved Posts</h2>
@@ -10,6 +15,8 @@
                 <div class="post">
                     <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
                     <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
+                    <a href="{% url 'edit_post' post.slug %}">Edit</a>
+                    <a href="{% url 'delete_post' post.slug %}">Delete</a>
                 </div>
             {% empty %}
                 <p>You have no approved posts.</p>
@@ -22,6 +29,8 @@
                 <div class="post">
                     <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
                     <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
+                    <a href="{% url 'edit_post' post.slug %}">Edit</a>
+                    <a href="{% url 'delete_post' post.slug %}">Delete</a>
                 </div>
             {% empty %}
                 <p>You have no pending posts.</p>
