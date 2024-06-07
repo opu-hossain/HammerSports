@@ -10,9 +10,10 @@ module.exports = {
       textDecoration: ['responsive', 'hover', 'focus', 'focus-visible', 'active'],
       fontWeight: ['responsive', 'hover', 'focus', 'focus-visible', 'active'],
       fontFamily: {
-        'sans': ['Open Sans', 'ui-sans-serif', 'system-ui'],
-        'serif': ['Merriweather', 'ui-serif', 'Georgia'],
-        'mono': ['Source Code Pro', 'ui-monospace', 'monospace'],
+        'poppins': ['Poppins', 'sans-serif'],
+        'roboto': ['Roboto', 'sans-serif'],
+        'playfair': ['Playfair Display', 'serif'],
+        'lato': ['Lato', 'sans-serif']
       },
       height: {
         '70': '70px',

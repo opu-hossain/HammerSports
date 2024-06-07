@@ -3,127 +3,158 @@
 
 {% block page_content %}
 
-<div class="title">
-    <h2>{{ post.title }}</h2>
+<div class="px-4 max-w-3xl mx-auto">
+    <div class="py-4">
+        <h1 class="text-3xl font-semibold text-gray-800 font-playfair text-left">{{ post.title }}</h1>
+    </div>
+    
+    <article class="prose lg:prose-xl">
+        <div class="text-sm text-gray-500 mb-4">
+            {{post.created_on.date}} | Categories: 
+            {% for category in post.categories.all %}
+                <a href="{% url 'Blog_category' category.name %}" class="text-blue-600 hover:underline">{{category.name}}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        {% if post.featured_image %}
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-auto object-cover rounded mb-4">
+        {% endif %}
+        <p class="text-gray-700 mb-4">{{post.body | safe }}</p>
+        <p class="text-sm text-gray-500">Tags: 
+            {% for tag in post.tags.all %}
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tag.name }}</span>
+            {% endfor %}
+        </p>
+    </article>
+
+    <section class="mt-12 px-4 max-w-3xl mx-auto">
+        <div id="author-section" class="border-t-2 border-gray-200 pt-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">About the Author</h2>
+            <div class="flex items-center">
+                <img src="{{ post.user.profile_image.url }}" alt="{{ post.user.first_name }} {{ post.user.last_name }}" class="w-16 h-16 rounded-full mr-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800">{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+                    <p class="text-gray-600">{{ post.user.bio }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="mt-12 px-4 max-w-3xl mx-auto">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Leave a Comment</h3>
+        {% for message in messages %}
+            <div class="bg-red-500 text-white p-3 rounded mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <form action="" method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="flex flex-col">
+                {{form.author}}
+            </div>
+            <div class="flex flex-col">
+                {{form.body}}
+            </div>
+            <button type="submit" class="py-2 px-4 rounded bg-blue-500 text-white">Submit</button>
+        </form>
+    </section>
+    
+    <section class="mt-12 px-4 max-w-3xl mx-auto">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Related Posts:</h3>
+        <div class="flex flex-wrap -mx-2">
+            {% for related_post in related_posts|slice:":2" %}
+                <article class="w-full sm:w-1/2 px-2 mb-4 flex flex-row">
+                    {% if related_post.featured_image %}
+                        <div class="w-1/2 sm:w-1/3 p-4">
+                            <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}" class="w-full h-auto object-cover rounded mb-2">
+                        </div>
+                    {% endif %}
+                    <div class="w-1/2 sm:w-2/3 p-4">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2"><a href="{% url 'Blog_details' slug=related_post.slug %}" class="hover:text-blue-600">{{ related_post.title }}</a></h2>
+                        <p class="text-gray-600">{{ related_post.description }}</p>
+                    </div>
+                </article>
+            {% empty %}
+                <p class="text-gray-600">No related posts found.</p>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <section class="mt-12 px-4 max-w-3xl mx-auto">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Comments:</h3>
+        {% for comment in comments %}
+            <article class="comment bg-white rounded-lg shadow mb-4 p-4">
+                <div class="flex items-center">
+                    {% if comment.author.has_profile_image %}
+                        <img src="{{ comment.author.profile_image.url }}" alt="{{ comment.author.username }}" class="w-12 h-12 rounded-full mr-4">
+                    {% else %}
+                        <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ comment.author.username }}" class="w-12 h-12 rounded-full mr-4">
+                    {% endif %}
+                    <div>
+                        <p class="text-sm text-gray-600">On {{ comment.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=comment.author.username %}" class="font-bold text-gray-800">{{ comment.author.username }}</a> wrote:</p>
+                        <p class="mt-2 text-gray-800">{{ comment.body | linebreaks }}</p>
+                    </div>
+                </div>
+                {% if user.is_superuser or user.is_staff %}
+                    {% if not comment.approved %}
+                        <form method="post" action="{% url 'comment_approve' comment.id %}" class="mt-2">
+                            {% csrf_token %}
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Approve</button>
+                        </form>
+                    {% else %}
+                        <p class="mt-2 text-green-500">Approved ✔</p>
+                    {% endif %}
+                {% endif %}
+                <button class="reply-button mt-2 px-4 py-2 bg-blue-500 text-white rounded">Reply</button>
+                <div class="reply-form mt-4" style="display: none;">
+                    <form method="post" action="{% url 'comment_create' post.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                        <textarea name="body" required class="w-full p-2 border rounded"></textarea>
+                        <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Submit Reply</button>
+                    </form>
+                </div>
+                {% if comment.replies %}
+                    <div class="replies mt-4 ml-12">
+                        {% for reply in comment.replies.all %}
+                            <article class="reply bg-white rounded-lg shadow mb-4 p-4">
+                                <div class="flex items-center">
+                                    {% if reply.author.has_profile_image %}
+                                        <img src="{{ reply.author.profile_image.url }}" alt="{{ reply.author.username }}" class="w-12 h-12 rounded-full mr-4">
+                                    {% else %}
+                                        <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ reply.author.username }}" class="w-12 h-12 rounded-full mr-4">
+                                    {% endif %}
+                                    <div>
+                                        <p class="text-sm text-gray-600">On {{ reply.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=reply.author.username %}" class="font-bold text-gray-800">{{ reply.author.username }}</a> replied:</p>
+                                        <p class="mt-2 text-gray-800">{{ reply.body | linebreaks }}</p>
+                                    </div>
+                                </div>
+                                {% if user.is_superuser or user.is_staff %}
+                                    {% if not reply.approved %}
+                                        <form method="post" action="{% url 'reply_approve' reply.id %}" class="mt-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Approve</button>
+                                        </form>
+                                    {% else %}
+                                        <p class="mt-2 text-green-500">Approved ✔</p>
+                                    {% endif %}
+                                {% endif %}
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.reply-button').click(function() {
+                    $(this).next('.reply-form').show();
+                });
+            });
+        </script>
+    </section>
 </div>
 
-<article>
-    <small>
-        {{post.created_on.date}} | Categories: 
-            {% for category in post.categories.all %}
-                <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
-            {% endfor %}
-            {% if post.featured_image %}
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
-            {% endif %}
-    </small>
-    <p>{{post.body | safe }}</p>
-    <p>Tags: {% for tag in post.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-</article>
 
-<section>
-    <div id="author-section">
-        <h2>About the Author</h2>
-        <img src="{{ post.user.profile_image.url }}" alt="{{ post.user.first_name }} {{ post.user.last_name }}">
-        <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
-        <p>{{ post.user.bio }}</p>
-    </div>
-</section>
-
-<section>
-    <h3>Leave a Comment</h3>
-    {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-    <form action="" method="post">
-        {% csrf_token %}
-            <div>{{form.author}}</div>
-            <div>{{form.body}}</div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</section>
-<section>
-    <h3>Related Posts:</h3>
-    {% for related_post in related_posts|slice:":2" %}
-        <article>
-            <h2><a href="{% url 'Blog_details' slug=related_post.slug %}">{{ related_post.title }}</a></h2>
-            {% if related_post.featured_image %}
-                <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}">
-            {% endif %}
-            <p>{{ post.user.bio }}</p>
-        </article>
-    {% empty %}
-        <p>No related posts found.</p>
-    {% endfor %}
-</section>
-
-<section>
-    <h3>Comments:</h3>
-    {% for comment in comments %}
-        <article class="comment">
-            {% if comment.author.has_profile_image %}
-                <img src="{{ comment.author.profile_image.url }}" alt="{{ comment.author.username }}">
-            {% else %}
-                <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ comment.author.username }}">
-            {% endif %}
-            <p>On {{ comment.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=comment.author.username %}"><b>{{ comment.author.username }}</b></a> wrote:</p>
-            <p>{{ comment.body | linebreaks }}</p>
-            {% if user.is_superuser or user.is_staff %}
-                {% if not comment.approved %}
-                    <form method="post" action="{% url 'comment_approve' comment.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Approve</button>
-                    </form>
-                {% else %}
-                    <p>Approved ✔</p>
-                {% endif %}
-            {% endif %}
-            <button class="reply-button">Reply</button>
-            <div class="reply-form" style="display: none;">
-                <form method="post" action="{% url 'comment_create' post.slug %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    <textarea name="body" required></textarea>
-                    <button type="submit">Submit Reply</button>
-                </form>
-            </div>
-            {% if comment.replies %}
-                <div class="replies">
-                    {% for reply in comment.replies.all %}
-                        <article class="reply">
-                            {% if reply.author.has_profile_image %}
-                                <img src="{{ reply.author.profile_image.url }}" alt="{{ reply.author.username }}">
-                            {% else %}
-                                <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ reply.author.username }}">
-                            {% endif %}
-                            <p>On {{ reply.created_on|date:"F j, Y" }} <a href="{% url 'profile' username=reply.author.username %}"><b>{{ reply.author.username }}</b></a> replied:</p>
-                            <p>{{ reply.body | linebreaks }}</p>
-                            {% if user.is_superuser or user.is_staff %}
-                                {% if not reply.approved %}
-                                    <form method="post" action="{% url 'reply_approve' reply.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit">Approve</button>
-                                    </form>
-                                {% else %}
-                                    <p>Approved ✔</p>
-                                {% endif %}
-                            {% endif %}
-                        </article>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </article>
-    {% endfor %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.reply-button').click(function() {
-                $(this).next('.reply-form').show();
-            });
-        });
-        </script>
-</section>
 
 {% endblock page_content %}

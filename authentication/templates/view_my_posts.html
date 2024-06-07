@@ -1,40 +1,42 @@
 {% extends 'base.html' %}
 
 {% block page_content %}
-    <div id="user-posts">
-        <h1>{{ user.username }}'s Posts</h1>
-        {% for message in messages %}
-            <div class="alert alert-success">
-                {{ message }}
+<div class="container mx-auto px-4 pt-16">
+    <h1 class="text-4xl font-bold mb-8">{{ user.username }}'s Posts</h1>
+    {% for message in messages %}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div id="approved-posts" class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Approved Posts</h2>
+        {% for post in approved_posts %}
+            <div class="post mb-6 bg-white rounded shadow-md p-6">
+                <h3 class="text-xl font-bold mb-2"><a href="{% url 'Blog_details' post.slug %}" class="text-blue-500 hover:text-blue-800">{{ post.title }}</a></h3>
+                <div class="flex space-x-4 mt-4">
+                    <a href="{% url 'edit_post' post.slug %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                    <a href="{% url 'delete_post' post.slug %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                </div>
             </div>
+        {% empty %}
+            <p class="text-lg text-gray-700">You have no approved posts.</p>
         {% endfor %}
-
-        <div id="approved-posts">
-            <h2>Approved Posts</h2>
-            {% for post in approved_posts %}
-                <div class="post">
-                    <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
-                    <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
-                    <a href="{% url 'edit_post' post.slug %}">Edit</a>
-                    <a href="{% url 'delete_post' post.slug %}">Delete</a>
-                </div>
-            {% empty %}
-                <p>You have no approved posts.</p>
-            {% endfor %}
-        </div>
-
-        <div id="pending-posts">
-            <h2>Pending Posts</h2>
-            {% for post in pending_posts %}
-                <div class="post">
-                    <h3><a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a></h3>
-                    <!-- <p>{{ post.body|truncatewords:30|safe }}</p> !!no need for now -->
-                    <a href="{% url 'edit_post' post.slug %}">Edit</a>
-                    <a href="{% url 'delete_post' post.slug %}">Delete</a>
-                </div>
-            {% empty %}
-                <p>You have no pending posts.</p>
-            {% endfor %}
-        </div>
     </div>
+
+    <div id="pending-posts">
+        <h2 class="text-2xl font-bold mb-4">Pending Posts</h2>
+        {% for post in pending_posts %}
+            <div class="post mb-6 bg-white rounded shadow-md p-6">
+                <h3 class="text-xl font-bold mb-2"><a href="{% url 'Blog_details' post.slug %}" class="text-blue-500 hover:text-blue-800">{{ post.title }}</a></h3>
+                <div class="flex space-x-4 mt-4">
+                    <a href="{% url 'edit_post' post.slug %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                    <a href="{% url 'delete_post' post.slug %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-lg text-gray-700">You have no pending posts.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

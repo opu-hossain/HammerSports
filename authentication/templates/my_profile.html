@@ -3,30 +3,36 @@
 {% load static %}
 
 {% block page_content %}
-    <h1>{{ user.username }}'s Profile</h1>
-    <!-- Add the "Update Profile" button here -->
-    {% if user == profile_user %}
-        <a href="{% url 'profile_update' %}"><button>Update Profile</button></a>
-        <a href="{% url 'view_my_posts' %}"><button>My Posts</button></a>
-    {% endif %}
-    <p>Email: {{ user.email }}</p>
-    <section>
-        <p>Bio: {{ user.bio }}</p>
-    </section>
-
-    {% if user.has_profile_image %}
-        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}">
-    {% else %}
-        <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ user.username }}">
-    {% endif %}
-
-    <h3>Following Categories:</h3>
-    <ul>
-        {% for category in followed_categories %}
-            <li>{{ category.name }}</li>
-        {% empty %}
-            <li>You're not following any categories!</li>
-        {% endfor %}
-    </ul>
-
+<div class="container mx-auto px-4 pt-16">
+    <div class="flex flex-wrap -mx-4">
+        <div class="w-full text-center mb-8">
+            {% if user.has_profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-48 h-48 object-cover rounded-full mx-auto">
+            {% else %}
+                <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ user.username }}" class="w-48 h-48 object-cover rounded-full mx-auto">
+            {% endif %}
+        </div>
+        <div class="w-full md:w-1/2 px-4">
+            <h1 class="text-4xl font-bold mb-4">{{ user.username }}'s Profile</h1>
+            {% if user == profile_user %}
+                <a href="{% url 'profile_update' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Update Profile</a>
+                <a href="{% url 'view_my_posts' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">My Posts</a>
+            {% endif %}
+            <p class="text-xl mb-2">Email: <span class="font-medium">{{ user.email }}</span></p>
+            <section class="mb-4">
+                <p class="text-xl">Bio: <span class="font-medium">{{ user.bio }}</span></p>
+            </section>
+        </div>
+        <div class="w-full md:w-1/2 px-4">
+            <h3 class="text-2xl font-bold mb-4">Following Categories:</h3>
+            <ul class="list-disc pl-5">
+                {% for category in followed_categories %}
+                    <li class="text-lg mb-2">{{ category.name }}</li>
+                {% empty %}
+                    <li class="text-lg mb-2">You're not following any categories!</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock page_content %}

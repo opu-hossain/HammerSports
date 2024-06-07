@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
 {% block page_content %}
+<div class="container mx-auto px-4 pt-16">
+    <h1 class="text-4xl font-bold mb-8">Search Results</h1>
     {% for post in results %}
-        <h2><a href="{% url 'Blog_details' slug=post.slug %}">{{ post.title }}</a></h2>
-        <p>{{ post.content|truncatewords:50 }}</p>
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-2"><a href="{% url 'Blog_details' slug=post.slug %}" class="text-blue-500 hover:text-blue-800">{{ post.title }}</a></h2>
+            <p class="text-lg text-gray-700">{{ post.content|truncatewords:50 }}</p>
+        </div>
     {% empty %}
-        <p>It looks like there aren’t any ‘Blogs’ matches on this topic.</p>
+        <p class="text-lg text-gray-700">It looks like there aren’t any ‘Blogs’ matches on this topic.</p>
     {% endfor %}
+</div>
 {% endblock page_content %}

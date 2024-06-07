@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"> -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
-    <script src="base.js"></script>
     <title>
         {% block page_title %}
 
@@ -36,8 +35,11 @@
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700">Account</a></li>
+                        <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700">Create Blog</a></li>
                         <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
                     {% else %}
+                        <li><a href="{% url 'login' %}" class="py-2 text-gray-600 hover:text-gray-700">Login</a></li>
                         <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
                     {% endif %}
                 </ul>
@@ -66,8 +68,11 @@
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700">Account</a></li>
+                        <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700">Create Blog</a></li>
                         <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
                     {% else %}
+                        <li><a href="{% url 'login' %}" class="py-2 text-gray-600 hover:text-gray-700">Login</a></li>
                         <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
                     {% endif %}
                 </ul>
@@ -81,7 +86,7 @@
     });
 </script>
 
-<main class="container mc-auto px-6 py-8 md:px-16">
+<main class="container mx-auto px-6 py-8 md:px-16">
     {% block page_content %}
 
     {% endblock page_content %}
