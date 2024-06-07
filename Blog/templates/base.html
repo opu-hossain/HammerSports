@@ -5,50 +5,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-    <title>Hammer Sports</title>
+    <!-- <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script src="base.js"></script>
+    <title>
+        {% block page_title %}
+
+        {% endblock page_title %}
+    </title>
 </head>
-<body>
-<header>
-    <!-- To Do: Needs Better Styling, mus make a Sticky Header with other styles -->
-    <div class="header-content">
-        <h1>
-            <a href="{% url "Blog_index" %}">HammerSports</a>
-        </h1>
-        <nav>
-            <ul>
-                <li><a href="{% url "Blog_index" %}">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                    <li><a href="{% url 'create_blog_post' %}">Create Blog</a></li>
-                    <li><a href="{% url 'my-profile' %}">Profile</a></li>
-                {% else %}
-                    <li><a href="{% url 'register' %}">Register</a></li>
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        <form method="GET" action="{% url 'search' %}">
-            <input type="text" name="q" placeholder="Search...">
-            <input type="submit" value="Search">
-        </form>
+<body class="">
+<header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
+        <div class="flex justify-between items-center">
+            <div>
+                <a href="{% url 'Blog_index' %}" class="text-gray-800 text-xl font-bold md:text-2xl hover:text-gray-700">HammerSports</a>
+            </div>
+            <div class="md:hidden">
+                <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu" id="hamburger-button">
+                    <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center justify-between" id="desktop-menu">
+            
+            <nav>
+                <ul class="flex items-center space-x-7 text-lg">
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <form method="GET" action="{% url 'search' %}" class="relative flex ml-4">
+                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
+                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966">
+                        <!-- Your SVG path -->
+                        <path d="M55.146 51.887L41.588 37.786c3.486-4.144 5.396-9.358 5.396-15.012C47.984 10.186 37.799 0 24.992 0S2 10.186 2 22.774s10.186 22.774 22.992 22.774c5.654 0 10.869-1.911 15.012-5.396l13.558 14.101c0.571 0.593 1.339 0.92 2.146 0.92 0.779 0 1.518-0.297 2.084-0.857 1.14-1.133 1.162-2.982 0.064-4.125zM24.992 40.547c-9.835 0-17.773-7.938-17.773-17.773S15.157 5 24.992 5 42.765 12.938 42.765 22.774 34.827 40.547 24.992 40.547z"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        <div class="hidden md:hidden" id="mobile-menu">
+            <form method="GET" action="{% url 'search' %}" class="flex mb-4">
+                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
+                <!-- <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
+                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966">
+                        <path d="M55.146 51.887L41.588 37.786c3.486-4.144 5.396-9.358 5.396-15.012C47.984 10.186 37.799 0 24.992 0S2 10.186 2 22.774s10.186 22.774 22.992 22.774c5.654 0 10.869-1.911 15.012-5.396l13.558 14.101c0.571 0.593 1.339 0.92 2.146 0.92 0.779 0 1.518-0.297 2.084-0.857 1.14-1.133 1.162-2.982 0.064-4.125zM24.992 40.547c-9.835 0-17.773-7.938-17.773-17.773S15.157 5 24.992 5 42.765 12.938 42.765 22.774 34.827 40.547 24.992 40.547z"/>
+                    </svg>
+                </button> -->
+            </form>
+            <nav>
+                <ul class="flex flex-col items-start space-y-2 text-lg">
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
 </header>
+<script>
+    document.querySelector('#hamburger-button').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>
 
-{% block page_title %}
+<main class="container mc-auto px-6 py-8 md:px-16">
+    {% block page_content %}
 
-{% endblock page_title %}
+    {% endblock page_content %}
+</main>
 
-{% block page_content %}
-
-{% endblock page_content %}
-
-<footer>
-    <div class="footer-content">
+<footer class="p-6 bg-gray-800 text-white">
+    <div class="container mx-auto text-center">
         <p>&copy; 2022 Hammer Sports. All rights reserved.</p>
-        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p><a href="#" class="underline text-blue-400 hover:text-blue-500">Privacy Policy</a> | <a href="#" class="underline text-blue-400 hover:text-blue-500">Terms of Service</a></p>
     </div>
 </footer>
 
