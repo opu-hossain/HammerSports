@@ -9,7 +9,7 @@ from taggit.managers import TaggableManager
 # Create your models here.
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -20,7 +20,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=255)
     body = CKEditor5Field('Text', config_name='extends')
     featured_image = models.ImageField(upload_to='featured_images/', null=True, blank=True)
     created_on = models.TimeField(auto_now=True)
@@ -31,7 +31,7 @@ class Post(models.Model):
 
     # Manual and Auto Slugs!
 
-    slug = models.SlugField(unique=True, null=True, blank=True)
+    slug = models.SlugField(unique=True, null=True, blank=True, max_length=255)
 
     def save(self, *args, **kwargs):
         if not self.slug:

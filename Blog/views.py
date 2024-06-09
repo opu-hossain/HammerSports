@@ -7,42 +7,50 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 
+from django.db import DataError
+
+
 def is_admin(user):
     return user.is_superuser
 
 
 # Create your views here.
 
+
 def Blog_index(request):
-    posts = Post.objects.filter(approved=True).order_by("-created_on").prefetch_related('categories')
+    posts = (
+        Post.objects.filter(approved=True)
+        .order_by("-created_on")
+        .prefetch_related("categories")
+    )
 
     context = {
-        'posts': posts,
+        "posts": posts,
     }
-    return render(request, 'Blog/index.html', context)
+    return render(request, "Blog/index.html", context)
 
 
-def Blog_category(request , category):
-    posts = Post.objects.filter(
-        categories__name__contains = category
-    ).order_by("-created_on")
+def Blog_category(request, category):
+    posts = Post.objects.filter(categories__name__contains=category).order_by(
+        "-created_on"
+    )
     category_obj = get_object_or_404(Category, name=category)
 
-    if request.method == 'POST' and request.user.is_authenticated:
-        if 'follow' in request.POST:
+    if request.method == "POST" and request.user.is_authenticated:
+        if "follow" in request.POST:
             request.user.followed_categories.add(category_obj)
             messages.success(request, f"You are now following {category_obj.name}.")
-            
-        elif 'unfollow' in request.POST:
+
+        elif "unfollow" in request.POST:
             request.user.followed_categories.remove(category_obj)
             messages.success(request, f"You have unfollowed {category_obj.name}.")
 
-
     context = {
-        'category': category_obj,
-        'posts': posts,
+        "category": category_obj,
+        "posts": posts,
     }
-    return render(request, 'Blog/category.html', context)
+    return render(request, "Blog/category.html", context)
+
 
 def Blog_details(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -59,21 +67,23 @@ def Blog_details(request, slug):
                 comment.save()
                 return HttpResponseRedirect(request.path_info)
         else:
-            messages.add_message(request, messages.ERROR, 'You must be logged in to comment.')
+            messages.add_message(
+                request, messages.ERROR, "You must be logged in to comment."
+            )
 
     comments = Comment.objects.filter(approved=True)
 
-    post_tags = post.tags.values_list('id', flat=True)
-    post_categories = post.categories.values_list('id', flat=True)
-    
+    post_tags = post.tags.values_list("id", flat=True)
+    post_categories = post.categories.values_list("id", flat=True)
+
     # Get the slug of the previous post from the session
-    previous_slug = request.session.get('previous_slug')
+    previous_slug = request.session.get("previous_slug")
 
     related_posts = Post.objects.filter(
-        Q(categories__in=post_categories) |
-        Q(tags__in=post_tags) |
-        Q(title__icontains=post.title),
-        approved=True
+        Q(categories__in=post_categories)
+        | Q(tags__in=post_tags)
+        | Q(title__icontains=post.title),
+        approved=True,
     ).exclude(id=post.id)
 
     # Exclude the previous post if it exists
@@ -83,7 +93,7 @@ def Blog_details(request, slug):
     related_posts = related_posts.distinct()[:2]
 
     # Store the current post's slug in the session
-    request.session['previous_slug'] = slug
+    request.session["previous_slug"] = slug
 
     # Filter comments based on approved status and user's superuser status
     if request.user.is_superuser:
@@ -91,50 +101,46 @@ def Blog_details(request, slug):
     else:
         comments = Comment.objects.filter(post=post, approved=True)
 
-
     context = {
-        'post': post,
-        'comments': comments,
-        'form': CommentForm(),
-        'related_posts': related_posts,
+        "post": post,
+        "comments": comments,
+        "form": CommentForm(),
+        "related_posts": related_posts,
     }
-    return render(request, 'Blog/details.html', context)
+    return render(request, "Blog/details.html", context)
 
 
 def search(request):
-    query = request.GET.get('q')
-    results = Post.objects.filter(
-        Q(title__icontains=query) | Q(body__icontains=query)
-    )
-    context = {
-        'results':results
-    }
-    return render(request, 'components/search_components/search_results.html', context)
+    query = request.GET.get("q")
+    results = Post.objects.filter(Q(title__icontains=query) | Q(body__icontains=query))
+    context = {"results": results}
+    return render(request, "components/search_components/search_results.html", context)
 
 
 def comment_create(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             # Spam Check Algorithm will be used here
             comment.post = post
             comment.author = request.user
-            parent_id = request.POST.get('parent_id')
+            parent_id = request.POST.get("parent_id")
             if parent_id:
                 parent_obj = Comment.objects.get(id=parent_id)
                 comment.parent = parent_obj
             comment.save()
-            return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+            return redirect("Blog_details", slug=post.slug)  # adjust this as needed
     else:
         form = CommentForm()
-    return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+    return redirect("Blog_details", slug=post.slug)  # adjust this as needed
+
 
 def comment_thread(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     post = comment.post
-    return redirect('Blog_details', slug=post.slug)  # adjust this as needed
+    return redirect("Blog_details", slug=post.slug)  # adjust this as needed
 
 
 @login_required
@@ -143,80 +149,93 @@ def comment_approve(request, id):
     if request.user.is_superuser:
         comment.approved = True
         comment.save()
-        return redirect('Blog_details', slug=comment.post.slug)
+        return redirect("Blog_details", slug=comment.post.slug)
     else:
-        messages.error(request, 'You do not have permission to approve comments.')
-        return redirect('Blog_details', slug=comment.post.slug)
-    
+        messages.error(request, "You do not have permission to approve comments.")
+        return redirect("Blog_details", slug=comment.post.slug)
+
+
 @login_required
 def reply_approve(request, id):
     reply = get_object_or_404(Comment, id=id)
     if request.user.is_superuser or request.user.is_staff:
         reply.approved = True
         reply.save()
-        return redirect('Blog_details', slug=reply.post.slug)
+        return redirect("Blog_details", slug=reply.post.slug)
     else:
-        messages.error(request, 'You do not have permission to approve replies.')
-        return redirect('Blog_details', slug=reply.post.slug)
+        messages.error(request, "You do not have permission to approve replies.")
+        return redirect("Blog_details", slug=reply.post.slug)
+
 
 # i need to work on this later
-@user_passes_test(is_admin) 
+@user_passes_test(is_admin)
 @login_required
 def approve_blog_post(request, id):
     post = get_object_or_404(Post, id=id)
     if request.user.is_superuser or request.user.is_staff:
         post.approved = True
         post.save()
-        messages.success(request, 'The blog post has been approved.')
+        messages.success(request, "The blog post has been approved.")
     else:
-        messages.error(request, 'You do not have permission to approve blog posts.')
-    return redirect('Blog_details', slug=post.slug)
+        messages.error(request, "You do not have permission to approve blog posts.")
+    return redirect("Blog_details", slug=post.slug)
+
 
 @login_required
 def create_blog_post(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
             post.save()
             form.save_m2m()
-            messages.success(request, 'Your blog post has been published.')
-            return redirect('view_my_posts')
+            messages.success(request, "Your blog post has been published.")
+            return redirect("view_my_posts")
     else:
         form = BlogPostForm()
 
-    return render(request, 'components/user/blog_post.html', {'form': form})
+    return render(request, "components/user/blog_post.html", {"form": form})
+
 
 @login_required
 def edit_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             # Update only the modified fields
             for field in form.changed_data:
-                if field in ['categories', 'tags']:
+                if field in ["categories", "tags"]:
                     getattr(post, field).set(form.cleaned_data[field])
                 else:
                     setattr(post, field, form.cleaned_data[field])
             post.save()
-            return redirect('view_my_posts')
+            return redirect("view_my_posts")
         else:
-            return render(request, 'components/user/blog_update.html', {'form': form, 'post': post, 'edit_mode': True, 'errors': form.errors})
+            return render(
+                request,
+                "components/user/blog_update.html",
+                {"form": form, "post": post, "edit_mode": True, "errors": form.errors},
+            )
     else:
         form = BlogPostForm(instance=post)
 
-    return render(request, 'components/user/blog_update.html', {'form': form, 'post': post, 'edit_mode': True})
+    return render(
+        request,
+        "components/user/blog_update.html",
+        {"form": form, "post": post, "edit_mode": True},
+    )
+
 
 @login_required
 def delete_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         post.delete()
-        messages.success(request, 'Your post was successfully deleted.')
-        return redirect('view_my_posts')
+        messages.success(request, "Your post was successfully deleted.")
+        return redirect("view_my_posts")
 
-    return render(request, 'components/user/blog_delete.html', {'post': post})
+    return render(request, "components/user/blog_delete.html", {"post": post})

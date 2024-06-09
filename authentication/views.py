@@ -17,6 +17,8 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            backend = 'HaHammerBlog.backends.CustomUserModelBackend'
+            user.backend = backend
             login(request, user)
             return redirect('Blog_index')
     else:
