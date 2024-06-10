@@ -6,12 +6,12 @@ from Blog.forms import CommentForm, BlogPostForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
-
 from django.db import DataError
 
 
 def is_admin(user):
     return user.is_superuser
+
 
 
 # Create your views here.

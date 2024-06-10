@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block page_content %}
 
-<div class="title px-6 mx-auto">
-    <h2 class="text-left text-3xl font-semibold py-14 ml-2 font-playfair">Blog Posts</h2>
-</div>
+<section class="">
+    <div class="breadcrumbs">
+        <a href="{% url 'Blog_index' %}">Home</a> /
+        <a href="{% url 'Blog_index' %}">Blogs</a> /
+    </div>
+</section>
 
 <div class="container mx-auto px-4 md:px-6 py-8">
     {% for post in posts %}

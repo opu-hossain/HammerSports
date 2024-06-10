@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block page_content %}
+<section>
+    <div class="breadcrumbs">
+        <a href="{% url 'Blog_index' %}">Home</a> /
+        <a href="{% url 'Blog_index' %}">Blogs</a> /
+        <a href="{% url 'Blog_details' post.slug %}">{{ post.title }}</a>
+    </div>
+</section>
 
 <div class="px-4 max-w-3xl mx-auto">
     <div class="py-4">
@@ -158,7 +165,6 @@
         </script>
     </section>
 </div>
-
 
 
 {% endblock page_content %}
