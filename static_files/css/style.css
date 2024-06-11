@@ -1632,6 +1632,10 @@ select{
   z-index: 50;
 }
 
+.m-8{
+  margin: 2rem;
+}
+
 .-mx-2{
   margin-left: -0.5rem;
   margin-right: -0.5rem;
@@ -1928,6 +1932,10 @@ select{
   max-width: 28rem;
 }
 
+.flex-1{
+  flex: 1 1 0%;
+}
+
 .flex-shrink{
   flex-shrink: 1;
 }
@@ -1984,6 +1992,10 @@ select{
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.grid-cols-4{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .flex-row{
   flex-direction: row;
 }
@@ -2026,6 +2038,14 @@ select{
 
 .justify-evenly{
   justify-content: space-evenly;
+}
+
+.gap-4{
+  gap: 1rem;
+}
+
+.gap-5{
+  gap: 1.25rem;
 }
 
 .gap-8{
@@ -2264,6 +2284,10 @@ select{
 
 .p-6{
   padding: 1.5rem;
+}
+
+.p-8{
+  padding: 2rem;
 }
 
 .px-16{
