@@ -1604,6 +1604,11 @@ select{
   position: sticky;
 }
 
+.inset-y-0{
+  top: 0px;
+  bottom: 0px;
+}
+
 .bottom-0{
   bottom: 0px;
 }
@@ -1628,6 +1633,10 @@ select{
   top: 50%;
 }
 
+.z-10{
+  z-index: 10;
+}
+
 .z-50{
   z-index: 50;
 }
@@ -1646,9 +1655,19 @@ select{
   margin-right: -1rem;
 }
 
+.mx-0{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 .mx-3{
   margin-left: 0.75rem;
   margin-right: 0.75rem;
+}
+
+.mx-8{
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .mx-auto{
@@ -1932,6 +1951,10 @@ select{
   max-width: 28rem;
 }
 
+.max-w-xl{
+  max-width: 36rem;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
@@ -2108,6 +2131,10 @@ select{
   border-radius: 0.25rem;
 }
 
+.rounded-3xl{
+  border-radius: 1.5rem;
+}
+
 .rounded-full{
   border-radius: 9999px;
 }
@@ -2262,6 +2289,10 @@ select{
   padding: 0px;
 }
 
+.p-10{
+  padding: 2.5rem;
+}
+
 .p-1p{
   padding: 1%;
 }
@@ -2330,6 +2361,11 @@ select{
   padding-bottom: 0.25rem;
 }
 
+.py-10{
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
 .py-12{
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -2353,6 +2389,11 @@ select{
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-6{
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .py-8{
@@ -2382,6 +2423,10 @@ select{
 
 .pr-10{
   padding-right: 2.5rem;
+}
+
+.pr-3{
+  padding-right: 0.75rem;
 }
 
 .pt-16{
@@ -2476,6 +2521,10 @@ select{
   font-style: italic;
 }
 
+.leading-5{
+  line-height: 1.25rem;
+}
+
 .leading-tight{
   line-height: 1.25;
 }
@@ -2533,6 +2582,16 @@ select{
 .text-green-700{
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
+}
+
+.text-indigo-500{
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
+}
+
+.text-indigo-600{
+  --tw-text-opacity: 1;
+  color: rgb(79 70 229 / var(--tw-text-opacity));
 }
 
 .text-white{
@@ -2935,6 +2994,11 @@ body {
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
+.hover\:text-indigo-500:hover{
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover{
   text-decoration-line: underline;
 }
@@ -2974,6 +3038,11 @@ body {
 }
 
 @media (min-width: 640px){
+  .sm\:mx-auto{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .sm\:h-48{
     height: 12rem;
   }
@@ -2988,6 +3057,19 @@ body {
 
   .sm\:w-2\/3{
     width: 66.666667%;
+  }
+
+  .sm\:max-w-xl{
+    max-width: 36rem;
+  }
+
+  .sm\:p-10{
+    padding: 2.5rem;
+  }
+
+  .sm\:py-12{
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 
   .sm\:text-base{
@@ -3007,6 +3089,11 @@ body {
 }
 
 @media (min-width: 768px){
+  .md\:mx-0{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
   .md\:flex{
     display: flex;
   }

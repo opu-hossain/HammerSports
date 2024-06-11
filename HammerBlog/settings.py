@@ -101,6 +101,12 @@ DATABASES = {
 # Account management
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
+# Email settings & SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # or another backend
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'  # or another email address
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

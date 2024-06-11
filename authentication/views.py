@@ -5,12 +5,32 @@ from django.shortcuts import get_object_or_404
 from .models import CustomUser
 from Blog.models import Post
 from .forms import CustomUserCreationForm, ProfileUpdateForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse , reverse_lazy
 
 
 
 # Create your views here.
+
+#password reset views
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'pass_reset/password_reset_form.html'  # your template
+    email_template_name = 'pass_reset/password_reset_email.html'  # your template
+    subject_template_name = 'pass_reset/password_reset_subject.txt'  # your template
+    success_url = reverse_lazy('password_reset_done')  # name of the URL for the page to be shown after the email is sent
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'pass_reset/password_reset_confirm.html'  # your template
+    success_url = reverse_lazy('password_reset_complete')  # name of the URL for the page to be shown after the password is reset
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'pass_reset/password_reset_done.html'
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'pass_reset/password_reset_complete.html'  # your template
 
 def register(request):
     if request.method == 'POST':
