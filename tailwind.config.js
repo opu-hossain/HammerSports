@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './Blog/templates/**/*.html',
     './authentication/templates/**/*.html',
+    './marketing/templates/**/*.html',
     './static_files/css/**/*.css',
   ],
   theme: {

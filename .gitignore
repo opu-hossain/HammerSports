@@ -167,3 +167,6 @@ static/
 node_modules/
 Blog/migrations/
 authentication/migrations/
+HammerBlog/.env
+
+

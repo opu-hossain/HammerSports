@@ -1,0 +1,46 @@
+<!--Email subscription Form -->
+<form method="post" action="{% url 'subscription' %}" id="subscription-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="block mb-2 font-bold">Subscribe our newsletter</label>
+        <input type="email" name="email" placeholder="Enter Email to Subscribe" class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-gray-700 bg-gray-200 focus:outline-none focus:border-indigo-500 mb-2">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
+    </div>
+</form>
+
+<!-- message if email is sent -->
+{% if messages %}
+    {% for message in messages %}
+    <div class="my-5 alert alert-success">
+        <h5 class="m-0">
+            {{ message }}
+        </h5>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- AJAX form submission -->
+<script>
+$('#subscription-form').on('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    $.ajax({
+        url: $(this).attr('action'), // Get the action URL from the form
+        type: 'post',
+        data: $(this).serialize(), // Serialize the form data for the AJAX post
+        success: function(response) {
+            // Remove the previous success message
+            $('#subscription-form .alert-success').remove();
+
+            // Append the success message to the form
+            $('#subscription-form').append('<div class="my-5 alert alert-success text-white bg-green-500 border-0 py-2 px-6 rounded shadow-lg"><h5 class="m-0">Thank you for subscribing to our newsletter.</h5></div>');
+            
+            // Clear the input field
+            $('#subscription-form input[type="email"]').val('');
+        }
+    });
+});
+</script>

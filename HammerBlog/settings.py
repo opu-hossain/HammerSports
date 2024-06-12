@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "Blog.apps.BlogConfig",
     "authentication.apps.AuthenticationConfig",
+    "marketing.apps.MarketingConfig",
     "django_ckeditor_5",
     "ckeditor_uploader",
     "taggit",
@@ -106,6 +108,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # or another b
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'  # or another email address
 
 
+# MAILCHIMP CREDENTIALS
+
+MAILCHIMP_API_KEY = config('MAILCHIMP_API_KEY')
+MAILCHIMP_DATA_CENTER = config('MAILCHIMP_DATA_CENTER')
+MAILCHIMP_EMAIL_LIST_ID = config('MAILCHIMP_EMAIL_LIST_ID')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
