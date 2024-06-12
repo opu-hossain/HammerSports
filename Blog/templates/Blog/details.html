@@ -31,6 +31,28 @@
                 <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tag.name }}</span>
             {% endfor %}
         </p>
+        <!-- Social Share -->
+        <div class="social-sharing flex space-x-4 items-center rounded-lg">
+            <p class="text-lg text-gray-900 font-bold mb-2">Share Post:</p>
+            <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/whatsapp.svg' %}" alt="Whatsapp" class="w-8 h-8 object-cover">
+            </a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/linkedin.svg' %}" alt="linkedin" class="w-8 h-8 object-cover">
+            </a>
+            <a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/facebook.svg' %}" alt="facebook" class="w-8 h-8 object-cover">
+            </a>
+            <a href="https://twitter.com/intent/tweet?text={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/twitterx.svg' %}" alt="twitter" class="w-8 h-8 object-cover">
+            </a>
+            <a href="http://www.reddit.com/submit?url={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/reddit.svg' %}" alt="reddit" class="w-8 h-8 object-cover">
+            </a>
+            <a href="mailto:?subject=I wanted to share this post with you&body={{ request.build_absolute_uri|urlencode }}" target="_blank">
+                <img src="{% static 'social_icons/gmail.svg' %}" alt="gmail" class="w-8 h-8 object-cover">
+            </a>
+        </div>
     </article>
 
     <section class="mt-12 px-4 max-w-3xl mx-auto">
