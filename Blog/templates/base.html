@@ -33,34 +33,34 @@
                 <ul class="flex items-center space-x-7 text-lg">
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
                     <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
+                    <div class="relative group">
+                        <img id="search-icon" src="{% static 'default/search.svg' %}" alt="Search" class="h-8 w-8">
+                        <div id="search-dropdown" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg p-4 text-base ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden">
+                            <form method="GET" action="{% url 'search' %}" class="relative">
+                                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
+                                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            </form>
+                        </div>
+                    </div>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700">Account</a></li>
-                        <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700">Create Blog</a></li>
-                        <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}" class="py-2 text-gray-600 hover:text-gray-700">Login</a></li>
-                        <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
+                        <li class="relative group">
+                            
+                            <img id="account-icon" src="{% static 'default/account.png' %}" alt="Account" class="h-8 w-8">
+                            
+                            <ul id="dropdown-menu" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden">
+                                <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">My Profile</a></li>
+                                <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">Create Blog</a></li>
+                                <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">Logout</a></li>
+                            </ul>
+                        </li>
                     {% endif %}
                 </ul>
             </nav>
-            <form method="GET" action="{% url 'search' %}" class="relative flex ml-4">
-                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
-                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966">
-                        <!-- Your SVG path -->
-                        <path d="M55.146 51.887L41.588 37.786c3.486-4.144 5.396-9.358 5.396-15.012C47.984 10.186 37.799 0 24.992 0S2 10.186 2 22.774s10.186 22.774 22.992 22.774c5.654 0 10.869-1.911 15.012-5.396l13.558 14.101c0.571 0.593 1.339 0.92 2.146 0.92 0.779 0 1.518-0.297 2.084-0.857 1.14-1.133 1.162-2.982 0.064-4.125zM24.992 40.547c-9.835 0-17.773-7.938-17.773-17.773S15.157 5 24.992 5 42.765 12.938 42.765 22.774 34.827 40.547 24.992 40.547z"/>
-                    </svg>
-                </button>
-            </form>
+            
         </div>
         <div class="hidden md:hidden" id="mobile-menu">
             <form method="GET" action="{% url 'search' %}" class="flex mb-4">
                 <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
-                <!-- <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-                    <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966">
-                        <path d="M55.146 51.887L41.588 37.786c3.486-4.144 5.396-9.358 5.396-15.012C47.984 10.186 37.799 0 24.992 0S2 10.186 2 22.774s10.186 22.774 22.992 22.774c5.654 0 10.869-1.911 15.012-5.396l13.558 14.101c0.571 0.593 1.339 0.92 2.146 0.92 0.779 0 1.518-0.297 2.084-0.857 1.14-1.133 1.162-2.982 0.064-4.125zM24.992 40.547c-9.835 0-17.773-7.938-17.773-17.773S15.157 5 24.992 5 42.765 12.938 42.765 22.774 34.827 40.547 24.992 40.547z"/>
-                    </svg>
-                </button> -->
             </form>
             <nav>
                 <ul class="flex flex-col items-start space-y-2 text-lg">
@@ -70,20 +70,12 @@
                         <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700">Account</a></li>
                         <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700">Create Blog</a></li>
                         <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}" class="py-2 text-gray-600 hover:text-gray-700">Login</a></li>
-                        <li><a href="{% url 'register' %}" class="py-2 text-gray-600 hover:text-gray-700">Register</a></li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
     </div>
 </header>
-<script>
-    document.querySelector('#hamburger-button').addEventListener('click', function() {
-        document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
-</script>
 
 <main class="container mx-auto px-6 py-8 md:px-16">
     
@@ -112,7 +104,9 @@
         <div class="text-left flex-1 p-6">
             <h3 class="font-bold mb-2">Resources</h3>
             <ul class="space-y-2">
-                <li><a href="#" class="text-blue-400 hover:text-blue-500">Guest Post</a></li>
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'guest_post' %}" class="text-blue-400 hover:text-blue-500">Guest Post</a></li>
+                {% endif %}
                 <li><a href="#" class="text-blue-400 hover:text-blue-500">Account Center</a></li>
                 <li><a href="#" class="text-blue-400 hover:text-blue-500">Report</a></li>
             </ul>
@@ -127,4 +121,5 @@
     </div>
 </footer>
 </body>
+<script src="{% static 'js/base.js' %}"></script>
 </html>

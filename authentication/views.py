@@ -72,6 +72,12 @@ def profile(request, username):
     }
     return render(request, 'profile.html', context)
 
+def guest_post(request):
+    if request.user.is_authenticated:
+        return redirect('Blog_index')  # or wherever you want to redirect authenticated users
+    else:
+        return render(request, 'unauthorized.html')
+
 def view_my_posts(request):
     approved_posts = Post.objects.filter(user=request.user, approved=True)
     pending_posts = Post.objects.filter(user=request.user, approved=False)

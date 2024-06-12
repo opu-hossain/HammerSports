@@ -178,13 +178,7 @@
             </article>
         {% endfor %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('.reply-button').click(function() {
-                    $(this).next('.reply-form').show();
-                });
-            });
-        </script>
+        <script src="{% static 'js/details.js' %}"></script>
     </section>
 </div>
 
