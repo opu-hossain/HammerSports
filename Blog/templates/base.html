@@ -11,6 +11,17 @@
 
         {% endblock page_title %}
     </title>
+    {% if analytics_code %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_code|safe }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ analytics_code|safe }}');
+    </script>
+    {% endif %}
 </head>
 <body class="">
 <header class="bg-white shadow-md sticky top-0 z-50">

@@ -167,6 +167,7 @@ static/
 node_modules/
 Blog/migrations/
 authentication/migrations/
+marketing/migrations/
 HammerBlog/.env
 
 
