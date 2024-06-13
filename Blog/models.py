@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.db.utils import IntegrityError
 from django_ckeditor_5.fields import CKEditor5Field
 from taggit.managers import TaggableManager
+from django.urls import reverse
 
 # Create your models here.
 
@@ -23,8 +24,8 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     body = CKEditor5Field('Text', config_name='extends')
     featured_image = models.ImageField(upload_to='featured_images/', null=True, blank=True)
-    created_on = models.TimeField(auto_now=True)
-    last_modified = models.TimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now=True)
+    last_modified = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
     approved = models.BooleanField(default=False)
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
@@ -44,6 +45,9 @@ class Post(models.Model):
 
     # Tags for every blog, taggit!
     tags = TaggableManager(blank=True)
+
+    def get_absolute_url(self):
+        return reverse('Blog_details', args=[str(self.id)])
 
 
 

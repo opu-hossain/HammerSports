@@ -137,6 +137,7 @@
                         <p class="mt-2 text-green-500">Approved ✔</p>
                     {% endif %}
                 {% endif %}
+                {% if user.is_authenticated %}
                 <button class="reply-button mt-2 px-4 py-2 bg-blue-500 text-white rounded">Reply</button>
                 <div class="reply-form mt-4" style="display: none;">
                     <form method="post" action="{% url 'comment_create' post.slug %}">
@@ -146,9 +147,11 @@
                         <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Submit Reply</button>
                     </form>
                 </div>
-                {% if comment.replies %}
-                    <div class="replies mt-4 ml-12">
-                        {% for reply in comment.replies.all %}
+            {% endif %}
+            {% if comment.replies %}
+                <div class="replies mt-4 ml-12">
+                    {% for reply in comment.replies.all %}
+                        {% if reply.approved or user.is_superuser or user.is_staff %}
                             <article class="reply bg-white rounded-lg shadow mb-4 p-4">
                                 <div class="flex items-center">
                                     {% if reply.author.has_profile_image %}
@@ -172,9 +175,10 @@
                                     {% endif %}
                                 {% endif %}
                             </article>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
             </article>
         {% endfor %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

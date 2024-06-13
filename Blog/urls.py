@@ -1,5 +1,13 @@
 from django.urls import path
 from . import views
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import BlogSitemap
+
+sitemaps = {
+    'posts': BlogSitemap,
+}
+
+
 
 
 urlpatterns = [
@@ -14,4 +22,6 @@ urlpatterns = [
     path('approve_post/<int:post_id>/', views.approve_blog_post, name='approve_blog_post'),
     path('post/<slug:slug>/edit/', views.edit_post, name='edit_post'),
     path('post/<slug:slug>/delete/', views.delete_post, name='delete_post'),
+
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

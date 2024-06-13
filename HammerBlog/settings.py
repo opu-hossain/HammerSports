@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "Blog.apps.BlogConfig",
     "authentication.apps.AuthenticationConfig",
     "marketing.apps.MarketingConfig",
@@ -96,9 +97,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'wWdVOyhonLKIeznsXVVJWhzttuTjwXxI',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '18512',
+        'PASSWORD': 'KkgixPcuIZvlfzlhncPcHdWwGxvSGTbi',
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': '18901',
     }
 }
 # Account management

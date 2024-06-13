@@ -6,15 +6,11 @@ from Blog.forms import CommentForm, BlogPostForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
-from django.db import DataError
+from django.templatetags.static import static
 
 
 def is_admin(user):
     return user.is_superuser
-
-
-
-# Create your views here.
 
 
 def Blog_index(request):
@@ -99,7 +95,7 @@ def Blog_details(request, slug):
     if request.user.is_superuser:
         comments = Comment.objects.filter(post=post)
     else:
-        comments = Comment.objects.filter(post=post, approved=True)
+        comments = Comment.objects.filter(post=post, approved=True, parent__isnull=True)
 
     context = {
         "post": post,
