@@ -24,4 +24,5 @@ urlpatterns = [
     path('post/<slug:slug>/delete/', views.delete_post, name='delete_post'),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', views.RobotstxtView.as_view(), name='robots.txt'),
 ]

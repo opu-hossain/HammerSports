@@ -6,11 +6,17 @@ from Blog.forms import CommentForm, BlogPostForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
-from django.templatetags.static import static
+from django.views.generic import TemplateView
 
 
 def is_admin(user):
     return user.is_superuser
+
+# Robots.txt
+class RobotstxtView(TemplateView):
+    template_name = "components/robots.txt"
+    content_type = "text/plain"
+
 
 
 def Blog_index(request):
