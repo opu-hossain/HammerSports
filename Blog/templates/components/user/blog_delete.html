@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Delete blog post - {{ post.title }}
+{% endblock page_title %}
+
 {% block page_content %}
 <div class="container mx-auto px-4 pt-16">
     <h2 class="text-4xl font-bold mb-8">Confirm Delete</h2>

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Published blogs
+{% endblock page_title %}
+
 {% block page_content %}
 <div class="container mx-auto px-4 pt-16">
     <h1 class="text-4xl font-bold mb-8">{{ user.username }}'s Posts</h1>
