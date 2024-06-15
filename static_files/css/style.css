@@ -1796,6 +1796,10 @@ select{
   display: inline-block;
 }
 
+.inline{
+  display: inline;
+}
+
 .flex{
   display: flex;
 }
@@ -2466,6 +2470,11 @@ select{
   padding-bottom: 1rem;
 }
 
+.py-5{
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -2606,6 +2615,10 @@ select{
 
 .leading-5{
   line-height: 1.25rem;
+}
+
+.leading-6{
+  line-height: 1.5rem;
 }
 
 .leading-tight{
@@ -3083,6 +3096,11 @@ body {
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
+.hover\:text-blue-700:hover{
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity));
+}
+
 .hover\:text-blue-800:hover{
   --tw-text-opacity: 1;
   color: rgb(30 64 175 / var(--tw-text-opacity));
@@ -3147,6 +3165,10 @@ body {
     margin-right: auto;
   }
 
+  .sm\:inline{
+    display: inline;
+  }
+
   .sm\:h-48{
     height: 12rem;
   }
@@ -3165,6 +3187,14 @@ body {
 
   .sm\:max-w-xl{
     max-width: 36rem;
+  }
+
+  .sm\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:rounded-lg{
+    border-radius: 0.5rem;
   }
 
   .sm\:p-10{
@@ -3215,6 +3245,10 @@ body {
     width: 50%;
   }
 
+  .md\:grid-cols-3{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .md\:items-center{
     align-items: center;
   }
@@ -3240,6 +3274,10 @@ body {
 }
 
 @media (min-width: 1024px){
+  .lg\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .lg\:px-8{
     padding-left: 2rem;
     padding-right: 2rem;

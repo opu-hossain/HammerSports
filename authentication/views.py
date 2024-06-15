@@ -8,6 +8,7 @@ from .forms import CustomUserCreationForm, ProfileUpdateForm
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 from django.contrib import messages
 from django.urls import reverse , reverse_lazy
+from django.http import HttpResponseRedirect
 
 
 
@@ -123,3 +124,25 @@ def profile_update(request):
         form = ProfileUpdateForm(instance=user)
     return render(request, 'profile_update.html', {'form':form})
 
+@login_required
+def unfollow_user(request, username):
+    user_to_unfollow = get_object_or_404(CustomUser, username=username)
+    request.user.following.remove(user_to_unfollow)
+    messages.success(request, f"You have unfollowed {username}!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def follow_user(request, username):
+    user_to_follow = get_object_or_404(CustomUser, username=username)
+    if request.user in user_to_follow.user_followers.all():
+        messages.error(request, f"You are already following {username}!")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    request.user.following.add(user_to_follow)
+    messages.success(request, f"You are now following {username}!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def followers_list(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+    followers = user.user_followers.all()
+    return render(request, 'followers.html', {'followers': followers})

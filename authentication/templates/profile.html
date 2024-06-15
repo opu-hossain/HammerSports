@@ -17,6 +17,36 @@
   <section class="mb-8">
     <p class="text-lg text-gray-700">Bio: {{ profile_user.bio }}</p>
   </section>
+
+{% for message in messages %}
+  <div id="message" class="bg-{{ message.tags }}-100 border border-{{ message.tags }}-400 text-{{ message.tags }}-700 px-4 py-3 rounded relative" role="alert">
+      <span class="block sm:inline">{{ message }}</span>
+  </div>
+{% endfor %}
+
+<div class="flex items-center justify-between mt-6">
+    {% if user.is_authenticated and user != profile_user %}
+        {% if user in profile_user.user_followers.all %}
+            <a href="{% url 'unfollow_user' profile_user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Unfollow
+            </a>
+        {% else %}
+            <a href="{% url 'follow_user' profile_user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Follow
+            </a>
+        {% endif %}
+    {% endif %}
+    <div class="bg-gray-200 rounded-full px-3 py-1 text-sm text-gray-700">
+      {% if user.is_authenticated and profile_user.user_followers.count > 0 %}
+        <a href="{% url 'followers_list' profile_user.username %}">
+          <span class="font-bold text-lg">{{ profile_user.user_followers.count }}</span> followers
+        </a>
+      {% else %}
+        <span class="font-bold text-lg">{{ profile_user.user_followers.count }}</span> followers
+      {% endif %}
+    </div>
+</div>
+
   <h3 class="text-2xl font-bold mb-4">Followed Categories:</h3>
   <ul class="list-disc pl-5 mb-8">
     {% for category in followed_categories %}
@@ -38,4 +68,7 @@
     {% endfor %}
   </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+
 {% endblock page_content %}
