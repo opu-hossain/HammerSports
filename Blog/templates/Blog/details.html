@@ -58,31 +58,44 @@
             </a>
         </div>
     </article>
-
     <section class="mt-12 px-4 max-w-3xl mx-auto">
         <div id="author-section" class="border-t-2 border-gray-200 pt-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">About the Author</h2>
-            <div class="flex items-center">
-                {% if post.user.profile_image %}
-                    <img src="{{ post.user.profile_image.url }}" alt="{{ post.user.first_name }} {{ post.user.last_name }}" class="w-16 h-16 rounded-full mr-4">
-                {% else %}
-                    <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ post.user.first_name }} {{ post.user.last_name }}" class="w-16 h-16 rounded-full mr-4">
-                {% endif %}
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-800">{{ post.user.first_name }} {{ post.user.last_name }}</h3>
-                    <p class="text-gray-600">{{ post.user.bio }}</p>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    {% if post.user.profile_image %}
+                        <img src="{{ post.user.profile_image.url }}" alt="{{ post.user.first_name }} {{ post.user.last_name }}" class="w-16 h-16 rounded-full mr-4">
+                    {% else %}
+                        <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ post.user.first_name }} {{ post.user.last_name }}" class="w-16 h-16 rounded-full mr-4">
+                    {% endif %}
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+                        <p class="text-gray-600">{{ post.user.user_followers.count }} followers</p>
+                        <p class="text-gray-600">{{ post.user.bio }}</p>
+                    </div>
                 </div>
+                {% if request.user.is_authenticated and request.user != post.user %}
+                    {% if post.user in request.user.following.all %}
+                        <a href="{% url 'unfollow_user' post.user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Unfollow
+                        </a>
+                    {% else %}
+                        <a href="{% url 'follow_user' post.user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Follow
+                        </a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </section>
     
     <section class="mt-12 px-4 max-w-3xl mx-auto">
         <h3 class="text-2xl font-semibold text-gray-800 mb-4">Leave a Comment</h3>
-        {% for message in messages %}
+        <!-- {% for message in messages %}
             <div class="bg-red-500 text-white p-3 rounded mb-4">
                 {{ message }}
             </div>
-        {% endfor %}
+        {% endfor %} -->
         <form action="" method="post" class="space-y-4">
             {% csrf_token %}
             <div class="flex flex-col">
