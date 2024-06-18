@@ -95,11 +95,11 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'KkgixPcuIZvlfzlhncPcHdWwGxvSGTbi',
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '18901',
+        'NAME': 'DB_NAME',
+        'USER': 'DB_USER',
+        'PASSWORD': 'DB_PASSWORD',
+        'HOST': 'DB_HOST',
+        'PORT': 'DB_PORT',
     }
 }
 # Account management
