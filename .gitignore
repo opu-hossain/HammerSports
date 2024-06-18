@@ -160,7 +160,11 @@ cython_debug/
 #.idea/
 
 # Custom instruction!
-static_files/
 media/
 static/
+# static_files/
+node_modules/
 Blog/migrations/
+authentication/migrations/
+marketing/migrations/
+HammerBlog/.env
