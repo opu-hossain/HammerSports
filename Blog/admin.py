@@ -34,8 +34,24 @@ class CommentsAdmin(admin.ModelAdmin):
 
 
 class PostAdminForm(forms.ModelForm):
+    """
+    ModelForm for the Post model in the Blog app's admin interface.
+
+    This form class is used to define the fields and behavior of the form
+    displayed in the admin interface when editing a Post object.
+
+    Attributes:
+        list_display (list): The fields to display in the list view for Post objects.
+        ordering (list): The fields to order the list view by.
+        actions (list): Actions to be displayed in the list view.
+    """
+    # Define the fields to display in the list view
     list_display = ['title', 'author', 'approved']
+
+    # Define the fields to order the list view by
     ordering = ['approved', 'title']
+
+    # Define the actions to be displayed in the list view
     actions = [approve_posts]
 
 class PostAdmin(admin.ModelAdmin):
@@ -43,7 +59,28 @@ class PostAdmin(admin.ModelAdmin):
     pass
 
 class CommentsAdmin(admin.ModelAdmin):
+    """
+    Custom admin for the Comment model.
+
+    This class extends the default ModelAdmin class and overrides the log_addition, log_change,
+    and log_deletion methods to log actions for comments in the Django admin interface.
+
+    Attributes:
+        None
+    """
+
     def log_addition(self, request, object, message):
+        """
+        Log an addition action for a comment in the Django admin interface.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            object (Comment): The comment object being added.
+            message (str): The change message.
+
+        Returns:
+            None
+        """
         content_type_id = ContentType.objects.get_for_model(object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
@@ -55,6 +92,17 @@ class CommentsAdmin(admin.ModelAdmin):
         )
 
     def log_change(self, request, object, message):
+        """
+        Log a change action for a comment in the Django admin interface.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            object (Comment): The comment object being changed.
+            message (str): The change message.
+
+        Returns:
+            None
+        """
         content_type_id = ContentType.objects.get_for_model(object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
@@ -66,6 +114,17 @@ class CommentsAdmin(admin.ModelAdmin):
         )
 
     def log_deletion(self, request, object, object_repr):
+        """
+        Log a deletion action for a comment in the Django admin interface.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            object (Comment): The comment object being deleted.
+            object_repr (str): The representation of the object being deleted.
+
+        Returns:
+            None
+        """
         content_type_id = ContentType.objects.get_for_model(object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
