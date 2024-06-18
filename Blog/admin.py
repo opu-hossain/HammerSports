@@ -8,6 +8,18 @@ from django import forms
 
 # Register your models here.
 def approve_posts(modeladmin, request, queryset):
+    """
+    Approve selected posts.
+
+    Args:
+        modeladmin (ModelAdmin): The ModelAdmin instance.
+        request (HttpRequest): The request object.
+        queryset (QuerySet): The queryset of posts to be approved.
+
+    Returns:
+        None
+    """
+    # Update the queryset to set the 'approved' field to True
     queryset.update(approved=True)
 
 approve_posts.short_description = "Approve selected posts"
