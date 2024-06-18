@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,10 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "Blog.apps.BlogConfig",
+    "authentication.apps.AuthenticationConfig",
+    "marketing.apps.MarketingConfig",
     "django_ckeditor_5",
     "ckeditor_uploader",
     "taggit",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "HammerBlog.urls"
@@ -69,12 +75,18 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "Blog.context_processors.analytics",
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "HammerBlog.wsgi.application"
+# Custom Backends Settings
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'HammerBlog.backends.CustomUserModelBackend',
+]
 
 
 # Database
@@ -85,12 +97,24 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'WhHXTurzCjggQGXAUgTAoUOYOPWmdflF',
+        'PASSWORD': 'KkgixPcuIZvlfzlhncPcHdWwGxvSGTbi',
         'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '25126',
+        'PORT': '18901',
     }
 }
+# Account management
+AUTH_USER_MODEL = 'authentication.CustomUser'
 
+# Email settings & SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # or another backend
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'  # or another email address
+
+
+# MAILCHIMP CREDENTIALS
+
+MAILCHIMP_API_KEY = config('MAILCHIMP_API_KEY')
+MAILCHIMP_DATA_CENTER = config('MAILCHIMP_DATA_CENTER')
+MAILCHIMP_EMAIL_LIST_ID = config('MAILCHIMP_EMAIL_LIST_ID')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -127,6 +151,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static_files',
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
@@ -240,5 +268,14 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
+# Axes Spam Filtering
 
+AXES_FAILURE_LIMIT = 5  # The number of login attempts allowed before a record is created for the failed logins. Default is 5.
+AXES_COOLOFF_TIME = 1   # The length of the period during which a user will be locked out. Default is None (users are locked out indefinitely).
 
+# AXES_LOCK_OUT_AT_FAILURE = True  # If set to True, lock out the user after AXES_FAILURE_LIMIT attempts. Default is True.
+# AXES_USE_USER_AGENT = True  # If set to True, lockouts will be based on a combination of IP and user agent. This means that a user can be locked out on one browser but still able to log in on another. Default is False.
+# AXES_LOCKOUT_TEMPLATE = 'myapp/lockout.html'  # If set, this template will be used for the lockout page. Default is None, which means a simple text message will be displayed.
+# AXES_LOCKOUT_URL = '/locked-out/'  # If set, users will be redirected to this URL when they are locked out. Default is None.
+# AXES_VERBOSE = True  # If set to True, log more information about failed logins. Default is False.
+# AXES_DISABLE_ACCESS_LOG = False  # If set to True, disable logging of successful logins. Default is False.

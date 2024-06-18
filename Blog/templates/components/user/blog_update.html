@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Update Blog Post - {{ post.title }}
+{% endblock page_title %}
+
+{% block page_content %}
+<div class="container mx-auto px-4 pt-16">
+    <h2 class="text-4xl font-bold mb-8">Edit Blog Post</h2>
+    <form method="post" action="{% url 'edit_post' post.slug %}" class="blog-post-form"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div class="form-error">{{ field }}: {{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+        <div class="form-group mb-4">
+            <label for="id_title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+        <div class="form-group mb-4">
+            <label for="id_body" class="block text-gray-700 text-sm font-bold mb-2">Body</label>
+            {{ form.body }}
+            {{ form.body.errors }}
+        </div>
+        <div class="form-group mb-4">
+            <label for="id_tags" class="block text-gray-700 text-sm font-bold mb-2">Tags</label>
+            {{ form.tags }}
+            {{ form.tags.errors }}
+        </div>
+        <div class="form-group mb-4">
+            <label for="id_categories" class="block text-gray-700 text-sm font-bold mb-2">Categories</label>
+            {{ form.categories }}
+            {{ form.categories.errors }}
+        </div>
+        <div class="form-group mb-4">
+            <label for="id_featured_image" class="block text-gray-700 text-sm font-bold mb-2">Featured Image</label>
+            {{ form.featured_image }}
+            {{ form.featured_image.errors }}
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+    </form>
+</div>
+{% endblock page_content %}

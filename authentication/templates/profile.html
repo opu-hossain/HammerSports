@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+    {{ profile_user.username }}'s Profile
+{% endblock page_title %}
+
+{% block page_content %}
+<div class="container mx-auto px-4 pt-16">
+  <h1 class="text-4xl font-bold mb-8">{{ profile_user.username }}'s Profile</h1>
+
+  {% if profile_user.profile_image %}
+    <img src="{{ profile_user.profile_image.url }}" alt="{{ profile_user.username }}" class="w-48 h-48 rounded-full mx-auto mb-4">
+  {% else %}
+    <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ profile_user.username }}" class="w-48 h-48 rounded-full mx-auto mb-4">
+  {% endif %}
+  <section class="mb-8">
+    <p class="text-lg text-gray-700">Bio: {{ profile_user.bio }}</p>
+  </section>
+
+{% for message in messages %}
+  <div id="message" class="bg-{{ message.tags }}-100 border border-{{ message.tags }}-400 text-{{ message.tags }}-700 px-4 py-3 rounded relative" role="alert">
+      <span class="block sm:inline">{{ message }}</span>
+  </div>
+{% endfor %}
+
+<div class="flex items-center justify-between mt-6">
+    {% if user.is_authenticated and user != profile_user %}
+        {% if user in profile_user.user_followers.all %}
+            <a href="{% url 'unfollow_user' profile_user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Unfollow
+            </a>
+        {% else %}
+            <a href="{% url 'follow_user' profile_user.username %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Follow
+            </a>
+        {% endif %}
+    {% endif %}
+    <div class="bg-gray-200 rounded-full px-3 py-1 text-sm text-gray-700">
+      {% if user.is_authenticated and profile_user.user_followers.count > 0 %}
+        <a href="{% url 'followers_list' profile_user.username %}">
+          <span class="font-bold text-lg">{{ profile_user.user_followers.count }}</span> followers
+        </a>
+      {% else %}
+        <span class="font-bold text-lg">{{ profile_user.user_followers.count }}</span> followers
+      {% endif %}
+    </div>
+</div>
+
+  <h3 class="text-2xl font-bold mb-4">Followed Categories:</h3>
+  <ul class="list-disc pl-5 mb-8">
+    {% for category in followed_categories %}
+      <li class="text-lg text-gray-700">{{ category.name }}</li>
+    {% empty %}
+      <li class="text-lg text-gray-700">This user is not following any categories.</li>
+    {% endfor %}
+  </ul>
+
+  <div id="user-posts">
+    <h2 class="text-2xl font-bold mb-4">{{ profile_user.username }}'s Approved Posts</h2>
+    {% for post in approved_posts %}
+      <div class="post mb-8">
+        <h3 class="text-xl font-bold mb-2"><a href="{% url 'Blog_details' post.slug %}" class="text-blue-500 hover:text-blue-800">{{ post.title }}</a></h3>
+        <p class="text-lg text-gray-700">{{ post.body|truncatewords:30|safe }}</p>
+      </div>
+    {% empty %}
+      <p class="text-lg text-gray-700">This user has no approved posts.</p>
+    {% endfor %}
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+
+{% endblock page_content %}

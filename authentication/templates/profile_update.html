@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Update profile
+{% endblock page_title %}
+
+{% block page_content %}
+<div class="container mx-auto px-4 pt-16">
+    <h2 class="text-4xl font-bold mb-8">Update Profile</h2>
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.first_name.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">First Name (current: {{ form.instance.first_name }})</label>
+            <input type="text" name="{{ form.first_name.html_name }}" class="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="{{ form.first_name.id_for_label }}" value="{{ form.instance.first_name }}">
+        </div>
+        <div>
+            <label for="{{ form.last_name.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Last Name (current: {{ form.instance.last_name }})</label>
+            <input type="text" name="{{ form.last_name.html_name }}" class="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="{{ form.last_name.id_for_label }}" value="{{ form.instance.last_name }}">
+        </div>
+        <div>
+            <label for="{{ form.email.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Email (current: {{ form.instance.email }})</label>
+            <input type="email" name="{{ form.email.html_name }}" class="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="{{ form.email.id_for_label }}" value="{{ form.instance.email }}">
+        </div>
+        <div>
+            <label for="{{ form.bio.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Bio (current: {{ form.instance.bio }})</label>
+            <textarea name="{{ form.bio.html_name }}" class="form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="{{ form.bio.id_for_label }}">{{ form.instance.bio }}</textarea>
+        </div>
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">{{ form.profile_image.label_tag }}</label>
+            {{ form.profile_image }}
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+    </form>
+</div>
+{% endblock %}

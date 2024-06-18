@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+    My profile
+{% endblock page_title %}
+
+{% block page_content %}
+<div class="container mx-auto px-4 pt-16">
+    <div class="flex flex-wrap -mx-4">
+        <div class="w-full text-center mb-8">
+            {% if user.has_profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-48 h-48 object-cover rounded-full mx-auto">
+            {% else %}
+                <img src="{% static 'default/default_profile_image.jpg' %}" alt="{{ user.username }}" class="w-48 h-48 object-cover rounded-full mx-auto">
+            {% endif %}
+        </div>
+        <div class="w-full md:w-1/2 px-4">
+            <h1 class="text-4xl font-bold mb-4">{{ user.username }}'s Profile</h1>
+            {% if user == profile_user %}
+                <a href="{% url 'profile_update' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Update Profile</a>
+                <a href="{% url 'view_my_posts' %}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">My Posts</a>
+            {% endif %}
+            <p class="text-xl mb-2">Email: <span class="font-medium">{{ user.email }}</span></p>
+            <section class="mb-4">
+                <p class="text-xl">Bio: <span class="font-medium">{{ user.bio }}</span></p>
+            </section>
+            <div class="flex items-center justify-center bg-gray-200 rounded-full px-3 py-1 text-sm text-gray-700 mb-4">
+                <i class="fas fa-users mr-2"></i>
+                {% if profile_user.user_followers.count > 0 %}
+                    <a href="{% url 'followers_list' profile_user.username %}" class="font-bold text-lg text-blue-500 hover:text-blue-700">
+                        {{ profile_user.user_followers.count }} followers
+                    </a>
+                {% else %}
+                    <span class="font-bold text-lg">{{ profile_user.user_followers.count }} followers
+                {% endif %}
+            </div>
+        </div>
+        <div class="w-full md:w-1/2 px-4">
+            <h3 class="text-2xl font-bold mb-4">Following Categories:</h3>
+            <ul class="list-disc pl-5">
+                {% for category in followed_categories %}
+                    <li class="text-lg mb-2">{{ category.name }}</li>
+                {% empty %}
+                    <li class="text-lg mb-2">You're not following any categories!</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

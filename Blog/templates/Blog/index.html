@@ -1,26 +1,43 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block page_title %}
-    <h2>
-        Blog Posts
-    </h2>
+    Test-Home Page
 {% endblock page_title %}
 
-{%  block page_content %}
-    {% block posts %}
-        {% for post in posts %}
-        <h3><a href="{% url 'Blog_details' slug=post.slug %}">{{ post.title }}</a></h3>
-        {% if post.featured_image %}
-            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
-        {% endif %}
-        <small>
-            {{post.created_on.date}} | Categories:
-            {% for category in post.categories.all %}
-                <a href="{% url 'Blog_category' category.name %}">{{category.name}}</a>
-            {% endfor %}
-        </small>
-        <p>{{ post.body|striptags|escape|slice:":400" }}...</p>
-        {% endfor %}
-    {% endblock posts %}
+{% block page_content %}
+
+<section class="">
+    <div class="breadcrumbs">
+        <a href="{% url 'Blog_index' %}">Home</a> /
+        <a href="{% url 'Blog_index' %}">Blogs</a> /
+    </div>
+</section>
+
+<div class="container mx-auto px-4 md:px-6 py-8">
+    {% for post in posts %}
+        <div class="flex flex-row mb-8">
+            {% if post.featured_image %}
+                <div class="w-1/2 sm:w-1/3 p-4">
+                    <img class="w-full h-24 sm:h-48 object-cover" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                </div>
+            {% endif %}
+            <div class="w-1/2 sm:w-2/3 p-4">
+                <h3 class="text-lg sm:text-xl text-gray-700 font-semibold mb-2 font-lato">
+                    <a href="{% url 'Blog_details' slug=post.slug %}">{{ post.title }}</a>
+                </h3>
+                <div class="text-sm sm:text-base text-gray-600 mb-4 font-roboto">
+                    {{ post.created_on.date }} | Categories: 
+                    {% for category in post.categories.all %}
+                        <a href="{% url 'Blog_category' category.name %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                <p class="text-gray-600 mb-4">{{ post.body|striptags|escape|slice:":100" }}...</p>
+                <div>
+                    <a href="{% url 'Blog_details' slug=post.slug %}" class="text-blue-600 hover:underline">Read more</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock page_content %}

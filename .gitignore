@@ -167,4 +167,9 @@ node_modules/
 Blog/migrations/
 authentication/migrations/
 marketing/migrations/
+<<<<<<< HEAD
+=======
 HammerBlog/.env
+
+
+>>>>>>> development

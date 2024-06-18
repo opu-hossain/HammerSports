@@ -1,30 +1,147 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-    <title>Hammer Sports</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <title>
+        {% block page_title %}
+
+        {% endblock page_title %}
+    </title>
+    {% if analytics_code %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_code|safe }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '{{ analytics_code|safe }}');
+    </script>
+    {% endif %}
 </head>
-<body>
-<header>
+<body class="">
+<!-- 
+    This is the base HTML template for the HammerSports blog website.
+    It contains the header section with the site logo, navigation menu, and search functionality.
+    The header is sticky and always stays at the top of the page.
+    The navigation menu is responsive and adapts to different screen sizes.
+    The template also includes conditional rendering for authenticated users.
+-->
 
-    <h1><a href="{% url "Blog_index" %}">Home</a></h1>
-    <h1>
-        <a href="{% url "Blog_index" %}">HammerSports</a>
-    </h1>
-    <form method="GET" action="{% url 'search' %}">
-        <input type="text" name="q" placeholder="Search...">
-        <input type="submit" value="Search">
-    </form>
-
+<header class="bg-white shadow-md sticky top-0 z-50">
+    <!-- Header content goes here -->
 </header>
-    {% block page_title %}
+<header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
+        <div class="flex justify-between items-center">
+            <div>
+                <a href="{% url 'Blog_index' %}" class="text-gray-800 text-xl font-bold md:text-2xl hover:text-gray-700">HammerSports</a>
+            </div>
+            <div class="md:hidden">
+                <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu" id="hamburger-button">
+                    <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center justify-between" id="desktop-menu">
+            
+            <nav>
+                <ul class="flex items-center space-x-7 text-lg">
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
+                    <div class="relative group">
+                        <img id="search-icon" src="{% static 'default/search.svg' %}" alt="Search" class="h-8 w-8">
+                        <div id="search-dropdown" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg p-4 text-base ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden">
+                            <form method="GET" action="{% url 'search' %}" class="relative">
+                                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
+                                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            </form>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <li class="relative group">
+                            
+                            <img id="account-icon" src="{% static 'default/account.png' %}" alt="Account" class="h-8 w-8">
+                            
+                            <ul id="dropdown-menu" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none z-10 hidden">
+                                <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">My Profile</a></li>
+                                <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">Create Blog</a></li>
+                                <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700 block px-4">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            
+        </div>
+        <div class="hidden md:hidden" id="mobile-menu">
+            <form method="GET" action="{% url 'search' %}" class="flex mb-4">
+                <input type="text" name="q" placeholder="Search..." class="w-full h-10 pl-3 pr-10 py-2 border rounded-full text-sm focus:outline-none focus:border-indigo-500">
+            </form>
+            <nav>
+                <ul class="flex flex-col items-start space-y-2 text-lg">
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">About</a></li>
+                    <li><a href="#" class="py-2 text-gray-600 hover:text-gray-700">Contact</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'my-profile' %}" class="py-2 text-gray-600 hover:text-gray-700">Account</a></li>
+                        <li><a href="{% url 'create_blog_post' %}" class="py-2 text-gray-600 hover:text-gray-700">Create Blog</a></li>
+                        <li><a href="{% url 'logout' %}" class="py-2 text-gray-600 hover:text-gray-700">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
 
-    {% endblock page_title %}
-
+<main class="container mx-auto px-6 py-8 md:px-16">
+    
     {% block page_content %}
 
     {% endblock page_content %}
+</main>
+
+<footer class="p-6 bg-gray-800 text-white">
+    <div class="container mx-auto flex gap-5">
+        <div class="text-left flex-1 p-6">
+            <img src="logo.png" alt="Logo" class="mb-4">
+            <p class="text-sm">This is a short description about the company. It provides information about the company's mission and values.</p>
+        </div>
+        <!-- First Section -->
+        <div class="text-left flex-1 p-6">
+            <h3 class="font-bold mb-2">Company</h3>
+            <ul class="space-y-2">
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">About Us</a></li>
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">Contact Us</a></li>
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">Terms & Conditions</a></li>
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <!-- Second Section -->
+        <div class="text-left flex-1 p-6">
+            <h3 class="font-bold mb-2">Resources</h3>
+            <ul class="space-y-2">
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'guest_post' %}" class="text-blue-400 hover:text-blue-500">Guest Post</a></li>
+                {% endif %}
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">Account Center</a></li>
+                <li><a href="#" class="text-blue-400 hover:text-blue-500">Report</a></li>
+            </ul>
+        </div>
+        <!-- Third Section -->
+        <div class="text-left flex-1 p-6">
+            {% include 'subscribe.html' %}
+        </div>
+    </div>
+    <div class="container mx-auto text-center mt-6">
+        <p>&copy; 2022 Hammer Sports. All rights reserved.</p>
+    </div>
+</footer>
 </body>
+<script src="{% static 'js/base.js' %}"></script>
 </html>
