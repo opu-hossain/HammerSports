@@ -113,7 +113,7 @@ This guide will walk you through the process of setting up the Hammer Sports pro
     pip install -r requirements.txt
     ```
 
-4. **Initialize and Install Node.js Dependencies:**
+4. **Initialize and Install Node.js Dependencies:** If you have changed styles! 
 
    ```bash
     npm init -y
@@ -146,7 +146,7 @@ This guide will walk you through the process of setting up the Hammer Sports pro
 
 7. **Access the Application:**
 
-    Open your web browser and navigate to http://localhost:8000 to view the Hammer Sports website.
+    Open your web browser and navigate to http://127.0.0.1:8000 to view the Hammer Sports website.
 
 Remember: This guide is intended for initial setup. For a more comprehensive understanding, we encourage you to explore the source code and customize it according to your needs.
 
