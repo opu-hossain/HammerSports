@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "taggit",
     "axes",
+    "dbbackup",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,11 @@ DATABASES = {
         'PORT': int(config('DB_PORT')),
     }
 }
+
+DBBACKUP_STORAGE_OPTIONS = {
+    'location': os.path.join(BASE_DIR, 'backups'),
+}
+
 # Account management
 AUTH_USER_MODEL = 'authentication.CustomUser'
 

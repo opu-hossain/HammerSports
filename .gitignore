@@ -168,3 +168,4 @@ Blog/migrations/
 authentication/migrations/
 marketing/migrations/
 HammerBlog/.env
+backups/*
