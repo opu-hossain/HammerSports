@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "taggit",
     "axes",
+    "dbbackup",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,11 @@ DATABASES = {
         'PORT': int(config('DB_PORT')),
     }
 }
+
+DBBACKUP_STORAGE_OPTIONS = {
+    'location': os.path.join(BASE_DIR, 'backups'),
+}
+
 # Account management
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
@@ -175,6 +181,17 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+
+# Security Settings
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 
 customColorPalette = [
         {
