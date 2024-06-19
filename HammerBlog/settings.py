@@ -182,6 +182,17 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+# Security Settings
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+
 customColorPalette = [
         {
             'color': 'hsl(4, 90%, 58%)',
