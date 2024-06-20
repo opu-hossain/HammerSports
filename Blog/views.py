@@ -40,6 +40,170 @@ class RobotstxtView(TemplateView):
 
 
 
+def custom_error_401(request, exception):
+    """
+    Custom 401 error view.
+
+    This view is called when a user is not authenticated and tries to access
+    a page that requires authentication. It renders the
+    'components/error/client/401_error.html' template with a 401 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 401 status code.
+    """
+    # Render the 'components/error/client/401_error.html' template with a 401
+    # status code.
+    return render(
+        request,
+        'components/error/client/401_error.html',
+        status=401
+    )
+
+def custom_error_403(request, exception):
+    """
+    Custom 403 error view.
+
+    This view is called when a user is not authorized and tries to access a page
+    that requires authorization. It renders the
+    'components/error/client/403_error.html' template with a 403 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 403 status code.
+    """
+    # Render the 'components/error/client/403_error.html' template with a 403
+    # status code.
+    return render(
+        request,
+        'components/error/client/403_error.html',
+        status=403  # The HTTP status code for the response.
+    )
+
+def custom_error_404(request, exception):
+    """
+    Custom 404 error view.
+
+    This view is called when a user tries to access a page that does not exist.
+    It renders the 'components/error/client/404_error.html' template with a 404
+    status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 404 status code.
+    """
+    # Render the 'components/error/client/404_error.html' template with a 404
+    # status code. An empty dictionary is passed as the context to the template.
+    return render(
+        request,
+        'components/error/client/404_error.html',
+        {},  # The context to pass to the template.
+        status=404  # The HTTP status code for the response.
+    )
+
+def custom_error_500(request):
+    """
+    Custom 500 error view.
+
+    This view is called when a server error occurs. It renders the
+    'components/error/server/500_error.html' template with a 500 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered error template with a 500 status code.
+    """
+    # Print a message to the console for debugging purposes.
+    # print('custom_error_500')
+
+    # Render the 'components/error/server/500_error.html' template with a 500
+    # status code. An empty dictionary is passed as the context to the template.
+    return render(
+        request,
+        'components/error/server/500_error.html',
+        {},  # The context to pass to the template.
+        status=500  # The HTTP status code for the response.
+    )
+
+def custom_error_502(request, exception):
+    """
+    Custom 502 error view.
+
+    This view is called when a bad gateway error occurs. It renders the
+    '502.html' template with a 502 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 502 status code.
+    """
+    # Render the '502.html' template with a 502 status code.
+    # An empty dictionary is passed as the context to the template.
+    return render(
+        request,
+        '502.html',
+        {},  # The context to pass to the template.
+        status=502  # The HTTP status code for the response.
+    )
+
+def custom_error_503(request, exception):
+    """
+    Custom 503 error view.
+
+    This view is called when a service unavailable error occurs. It renders the
+    'components/error/server/503_error.html' template with a 503 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 503 status code.
+    """
+    # Render the 'components/error/server/503_error.html' template with a 503
+    # status code. An empty dictionary is passed as the context to the template.
+    return render(
+        request,
+        'components/error/server/503_error.html',
+        {},  # The context to pass to the template.
+        status=503  # The HTTP status code for the response.
+    )
+
+def custom_error_504(request, exception):
+    """
+    Custom 504 error view.
+
+    This view is called when a gateway timeout error occurs. It renders the
+    'components/error/server/504_error.html' template with a 504 status code.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        exception (Exception): The exception object that caused the error.
+
+    Returns:
+        HttpResponse: The rendered error template with a 504 status code.
+    """
+    # Render the 'components/error/server/504_error.html' template with a 504
+    # status code.
+    return render(
+        request,
+        'components/error/server/504_error.html',
+        status=504  # The HTTP status code for the response.
+    )
+
+
 def Blog_index(request):
     """
     View function for the Blog Index page.
