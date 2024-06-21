@@ -4,7 +4,17 @@
     Unauthorized
 {% endblock page_title %}
 
-{% block page_content %}    
-<h1>Unauthorized</h1>
-<p>We're sorry, but you are not authorized to perform the requested operation.</p>
+{% block page_content %}
+<div class="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Unauthorized
+            </h1>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                We're sorry, but you are not authorized to perform the requested operation.
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock page_content %}
