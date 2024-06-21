@@ -1900,13 +1900,13 @@ select{
   max-height: 100vh;
 }
 
-.min-h-screen{
-  min-height: 100vh;
-}
-
 .min-h-fit{
   min-height: -moz-fit-content;
   min-height: fit-content;
+}
+
+.min-h-screen{
+  min-height: 100vh;
 }
 
 .w-1{
@@ -2428,6 +2428,10 @@ select{
   padding: 0.5rem;
 }
 
+.p-20{
+  padding: 5rem;
+}
+
 .p-3{
   padding: 0.75rem;
 }
@@ -2446,10 +2450,6 @@ select{
 
 .p-8{
   padding: 2rem;
-}
-
-.p-20{
-  padding: 5rem;
 }
 
 .px-16{
@@ -2678,12 +2678,12 @@ select{
   line-height: 1.5rem;
 }
 
-.leading-tight{
-  line-height: 1.25;
-}
-
 .leading-7{
   line-height: 1.75rem;
+}
+
+.leading-tight{
+  line-height: 1.25;
 }
 
 .text-black{
@@ -3264,12 +3264,12 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .sm\:rounded-lg{
-    border-radius: 0.5rem;
-  }
-
   .sm\:rounded-3xl{
     border-radius: 1.5rem;
+  }
+
+  .sm\:rounded-lg{
+    border-radius: 0.5rem;
   }
 
   .sm\:p-10{
@@ -3295,6 +3295,11 @@ body {
     line-height: 1.5rem;
   }
 
+  .sm\:text-lg{
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
   .sm\:text-sm{
     font-size: 0.875rem;
     line-height: 1.25rem;
@@ -3302,11 +3307,6 @@ body {
 
   .sm\:text-xl{
     font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .sm\:text-lg{
-    font-size: 1.125rem;
     line-height: 1.75rem;
   }
 
