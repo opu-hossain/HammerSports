@@ -151,3 +151,5 @@ This guide will walk you through the process of setting up the Hammer Sports pro
 Remember: This guide is intended for initial setup. For a more comprehensive understanding, we encourage you to explore the source code and customize it according to your needs.
 
 I welcome anyone who want's to contribute to this project!
+
+gitlab success!
