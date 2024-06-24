@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from Blog.models import Category
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -11,7 +10,7 @@ class CustomUser(AbstractUser):
     profile_image = models.ImageField(
         upload_to='profile_images/', null=True, blank=True)
     # Categories the user is following
-    followed_categories = models.ManyToManyField(Category,
+    followed_categories = models.ManyToManyField('Blog.Category',
                                                 related_name='cat_followers')
     # Users the user is following
     following = models.ManyToManyField('self',
