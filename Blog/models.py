@@ -42,7 +42,7 @@ class Post(models.Model):
     """
     A model representing a blog post.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('authentication.CustomUser', on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     body = CKEditor5Field('Text', config_name='extends')
     featured_image = models.ImageField(upload_to='featured_images/', null=True, blank=True)
