@@ -6,6 +6,10 @@ from django.db.utils import IntegrityError
 from django_ckeditor_5.fields import CKEditor5Field
 from taggit.managers import TaggableManager
 from django.urls import reverse
+from django.core.files.base import ContentFile
+
+from PIL import Image
+from io import BytesIO
 
 # Create your models here.
 
@@ -69,6 +73,21 @@ class Post(models.Model):
             while Post.objects.filter(slug=self.slug).exists():
                 self.slug = '{}-{}'.format(slugify(title), num)
                 num += 1
+        
+
+        if self.featured_image:
+
+            img = Image.open(self.featured_image)
+
+            max_size = (600, 400)
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+
+            if img.format != 'WEBP':
+                output = BytesIO()
+                img.save(output, format='WEBP', quality=80)
+                output.seek(0)
+
+                self.featured_image = ContentFile(output.read(), name=self.featured_image.name.split('.')[0] + '.webp')
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
