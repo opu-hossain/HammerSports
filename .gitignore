@@ -164,8 +164,10 @@ media/
 static/
 # static_files/
 node_modules/
-Blog/migrations/
-authentication/migrations/
-marketing/migrations/
+
+# Ignore all files in any migrations directories except the __init__.py file
+*/migrations/*
+!*/migrations/__init__.py
+
 HammerBlog/.env
 backups/*
