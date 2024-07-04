@@ -97,7 +97,7 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-# Default SQLITE3 detabase
+# Default SQLITE3 database
 
 DATABASES = {
     'default': {
