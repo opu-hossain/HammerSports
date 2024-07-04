@@ -28,5 +28,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+
+        MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
+        MAILCHIMP_DATA_CENTER: ${{ secrets.MAILCHIMP_DATA_CENTER }}
+        MAILCHIMP_EMAIL_LIST_ID: ${{ secrets.MAILCHIMP_EMAIL_LIST_ID }}
       run: |
         python manage.py test
