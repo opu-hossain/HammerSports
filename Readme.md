@@ -2,51 +2,13 @@
 
 Welcome to Hammer Sports, an innovative, fully open-sourced blog website developed using Python and the Django framework. This platform boasts essential features like robust user authentication, a dynamic commenting system, integrated email marketing powered by Mailchimp, and seamless social media connectivity. Currently in its inception phase, Hammer Sports aims to evolve into a leading open-source solution for bloggers and content creators worldwide.
 
-## 💻 Technologies Used:
+## 💻 Technologies Used
 
 - Python
 - Django
 - Django CKEditor (Rich Text Editor)
 - Tailwind CSS (CSS Framework)
 - Node.js
-
-## 📂 Project Architecture:
-
-### Root Files
-- **.gitignore:** Specifies files and directories ignored by Git.
-- **LICENSE:** Project licensing information.
-- **SECURITY.md:** Details security guidelines and policies.
-- **manage.py:** Django command-line utility.
-- **package-lock.json, package.json:** Dependency management files.
-- **README.md:** Overview and information about the project.
-- **requirements.txt:** List of Python dependencies.
-- **static/:** Directory for static files such as CSS, JavaScript, and images.
-- **tailwind.config.js:** Configuration file for Tailwind CSS.
-
-### Blog Module
-- **admin.py:** Administration configurations for managing the blog.
-- **forms.py:** Form definitions for handling blog-related input.
-- **models.py:** Database models for storing blog content.
-- **templates/:** HTML templates for rendering blog pages.
-- **urls.py:** URL configurations for routing blog-related requests.
-- **views.py:** Logic for handling views and business operations within the blog module.
-
-### Authentication Module
-- **models.py:** Database models for managing user authentication.
-- **urls.py:** URL configurations for authentication-related endpoints.
-- **views.py:** Logic for user authentication and related operations.
-- **forms.py:** Form definitions for user authentication inputs.
-
-### Marketing Module
-- **urls.py:** URL configurations for marketing features and campaigns.
-- **views.py:** Logic for handling marketing-related functionalities.
-
-### Media Storage
-- **featured_images/:** Directory for storing featured images used throughout the site.
-- **profile_images/:** Directory for storing user profile images.
-
-### Static Files
-- **static_files/:** Directory for CSS, JavaScript, default logos, and other static assets.
 
 ## 📝 Observations
 
@@ -146,7 +108,7 @@ This guide will walk you through the process of setting up the Hammer Sports pro
 
 7. **Access the Application:**
 
-    Open your web browser and navigate to http://127.0.0.1:8000 to view the Hammer Sports website.
+    Open your web browser and navigate to <http://127.0.0.1:8000> to view the Hammer Sports website.
 
 Remember: This guide is intended for initial setup. For a more comprehensive understanding, we encourage you to explore the source code and customize it according to your needs.
 
