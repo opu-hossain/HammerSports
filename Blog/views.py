@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 from django.views.generic import TemplateView
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 def is_admin(user):
@@ -304,7 +305,7 @@ def Blog_category(request, category):
         messages.error(request, "Category does not exist.")
         return redirect("Blog_index")
 
-    except Exception as e:
+    except Exception:
         # Handle any other exceptions that may occur
         messages.error(request, "An error occurred: " + str(e))
         return redirect("Blog_index")
@@ -342,7 +343,11 @@ def Blog_details(request, slug):
                     post=post,
                 )
                 comment.save()
-                return HttpResponseRedirect(request.path_info)
+                if url_has_allowed_host_and_scheme(url=request.path_info, allowed_hosts={request.get_host()}):
+                    return HttpResponseRedirect(request.path_info)
+                else:
+                    # Redirect to a safe default page if the URL is not safe
+                    return redirect('Blog_index')
 
         # Get the list of approved comments
         comments = Comment.objects.filter(approved=True, post=post)
@@ -467,7 +472,7 @@ def comment_create(request, slug):
             comment.author = request.user
 
             # Check if the comment is a reply to another comment
-            parent_id = request.POST.get("parent_id")
+            parent_id = form.cleaned_data.get("parent_id")
             if parent_id:
                 try:
                     # Get the parent comment object and associate it with the comment
@@ -517,7 +522,7 @@ def comment_thread(request, comment_id):
 
 
 @login_required
-def comment_approve(request, id):
+def comment_approve(request, comment_id):
     """
     Approve a comment and redirect to the blog post details page.
 
@@ -533,7 +538,7 @@ def comment_approve(request, id):
         ValueError: If the user is not authorized to approve the comment.
     """
     try:
-        comment = Comment.objects.get(id=id)
+        comment = Comment.objects.get(id=comment_id)
     except Comment.DoesNotExist:
         raise Http404("Comment does not exist.")
 
@@ -547,7 +552,7 @@ def comment_approve(request, id):
 
 
 @login_required
-def reply_approve(request, id):
+def reply_approve(request, comment_id):
     """
     Approve a reply comment and redirect to the blog post details page.
 
@@ -563,7 +568,7 @@ def reply_approve(request, id):
     """
     # Get the reply comment object
     try:
-        reply = Comment.objects.get(id=id)
+        reply = Comment.objects.get(id=comment_id)
     except Comment.DoesNotExist:
         raise Http404("Reply comment does not exist.")
 
@@ -584,8 +589,8 @@ def reply_approve(request, id):
 # i need to work on this later
 @user_passes_test(is_admin)
 @login_required
-def approve_blog_post(request, id):
-    post = get_object_or_404(Post, id=id)
+def approve_blog_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
     if request.user.is_superuser or request.user.is_staff:
         post.approved = True
         post.save()

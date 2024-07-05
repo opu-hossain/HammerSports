@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.encoding import force_str
 from django.contrib.contenttypes.models import ContentType
-from Blog.models import Category, Comment, Post 
-from ckeditor.widgets import CKEditorWidget
+from Blog.models import Category, Comment, Post
 from django import forms
+
 
 # Register your models here.
 def approve_posts(modeladmin, request, queryset):
@@ -22,15 +22,16 @@ def approve_posts(modeladmin, request, queryset):
     # Update the queryset to set the 'approved' field to True
     queryset.update(approved=True)
 
+
 approve_posts.short_description = "Approve selected posts"
 
 
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+
 class CommentsAdmin(admin.ModelAdmin):
     pass
-
 
 
 class PostAdminForm(forms.ModelForm):
@@ -45,31 +46,22 @@ class PostAdminForm(forms.ModelForm):
         ordering (list): The fields to order the list view by.
         actions (list): Actions to be displayed in the list view.
     """
+
     # Define the fields to display in the list view
-    list_display = ['title', 'author', 'approved']
+    list_display = ["title", "author", "approved"]
 
     # Define the fields to order the list view by
-    ordering = ['approved', 'title']
+    ordering = ["approved", "title"]
 
     # Define the actions to be displayed in the list view
     actions = [approve_posts]
+
 
 class PostAdmin(admin.ModelAdmin):
     # form = PostAdminForm
     pass
 
-class CommentsAdmin(admin.ModelAdmin):
-    """
-    Custom admin for the Comment model.
-
-    This class extends the default ModelAdmin class and overrides the log_addition, log_change,
-    and log_deletion methods to log actions for comments in the Django admin interface.
-
-    Attributes:
-        None
-    """
-
-    def log_addition(self, request, object, message):
+    def log_addition(self, request, comment_object, message):
         """
         Log an addition action for a comment in the Django admin interface.
 
@@ -81,17 +73,17 @@ class CommentsAdmin(admin.ModelAdmin):
         Returns:
             None
         """
-        content_type_id = ContentType.objects.get_for_model(object).pk
+        content_type_id = ContentType.objects.get_for_model(comment_object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
             content_type_id=content_type_id,
-            object_id=object.pk,
-            object_repr=force_str(object),
+            object_id=comment_object.pk,
+            object_repr=force_str(comment_object),
             action_flag=ADDITION,
             change_message=message,
         )
 
-    def log_change(self, request, object, message):
+    def log_change(self, request, comment_object, message):
         """
         Log a change action for a comment in the Django admin interface.
 
@@ -103,17 +95,17 @@ class CommentsAdmin(admin.ModelAdmin):
         Returns:
             None
         """
-        content_type_id = ContentType.objects.get_for_model(object).pk
+        content_type_id = ContentType.objects.get_for_model(comment_object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
             content_type_id=content_type_id,
-            object_id=object.pk,
-            object_repr=force_str(object),
+            object_id=comment_object.pk,
+            object_repr=force_str(comment_object),
             action_flag=CHANGE,
             change_message=message,
         )
 
-    def log_deletion(self, request, object, object_repr):
+    def log_deletion(self, request, comment_object, object_repr):
         """
         Log a deletion action for a comment in the Django admin interface.
 
@@ -125,15 +117,14 @@ class CommentsAdmin(admin.ModelAdmin):
         Returns:
             None
         """
-        content_type_id = ContentType.objects.get_for_model(object).pk
+        content_type_id = ContentType.objects.get_for_model(comment_object).pk
         LogEntry.objects.log_action(
             user_id=request.user.id,  # replace with your user ID
             content_type_id=content_type_id,
-            object_id=object.pk,
+            object_id=comment_object.pk,
             object_repr=object_repr,
             action_flag=DELETION,
         )
-
 
 
 admin.site.register(Category, CategoryAdmin)

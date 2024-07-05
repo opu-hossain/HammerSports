@@ -8,6 +8,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmVie
 from django.contrib import messages
 from django.urls import reverse , reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponseServerError, Http404
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 
@@ -380,8 +381,15 @@ def unfollow_user(request, username):
     # Display a success message to the user
     messages.success(request, f"You have unfollowed {username}!")
 
-    # Redirect the user to the page they were on before
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # Get the referrer URL
+    referrer = request.META.get('HTTP_REFERER')
+
+    # Check if the referrer URL is safe
+    if referrer and url_has_allowed_host_and_scheme(url=referrer, allowed_hosts={request.get_host()}):
+        return HttpResponseRedirect(referrer)
+    else:
+        # Redirect to a safe default location if the referrer URL is not safe
+        return redirect('Blog_index')  
 
 @login_required
 def follow_user(request, username):

@@ -1,8 +1,6 @@
 from django.db import models
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
-from django.db.utils import IntegrityError
 from django_ckeditor_5.fields import CKEditor5Field
 from taggit.managers import TaggableManager
 from django.urls import reverse
@@ -13,14 +11,6 @@ from io import BytesIO
 
 # Create your models here.
 
-"""
-A model to represent the categories that posts can belong to.
-
-Each Category has a name, which is unique within the database.
-
-For more information on the use of Meta classes to control the behaviour
-of the model, see https://docs.djangoproject.com/en/5.0/ref/models/options/
-"""
 class Category(models.Model):
     """
     A model to represent the categories that posts can belong to.
@@ -73,7 +63,6 @@ class Post(models.Model):
             while Post.objects.filter(slug=self.slug).exists():
                 self.slug = '{}-{}'.format(slugify(title), num)
                 num += 1
-        
 
         if self.featured_image:
 
