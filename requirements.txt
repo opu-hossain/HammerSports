@@ -45,8 +45,8 @@ pip-autoremove==0.10.0
 pipreqs==0.5.0
 platformdirs==4.2.2
 prompt_toolkit==3.0.45
-psycopg2==2.9.9
-psycopg2-binary==2.9.9
+# psycopg2==2.9.9  Uncomment it for PostGreSQL database
+# psycopg2-binary==2.9.9 Uncomment it for PostGreSQL database
 ptyprocess==0.7.0
 pure-eval==0.2.2
 Pygments==2.18.0

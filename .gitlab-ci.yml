@@ -54,3 +54,105 @@ test:python3.12:
     MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
     MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
     MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on windows python==3.10
+test:windows-python3.10:
+  tags:
+    - windows
+  stage: test
+  script:
+    - python -m venv venv
+    - venv\Scripts\activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on windows python==3.11
+test:windows-python3.11:
+  tags:
+    - windows
+  stage: test
+  script:
+    - python -m venv venv
+    - venv\Scripts\activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on windows python==3.12
+test:windows-python3.12:
+  tags:
+    - windows
+  stage: test
+  script:
+    - python -m venv venv
+    - venv\Scripts\activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on macOS with Python 3.10
+test:macos-python3.10:
+  tags:
+    - macos
+  stage: test
+  script:
+    - python3 -m venv venv
+    - source venv/bin/activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on macOS with Python 3.11
+test:macos-python3.11:
+  tags:
+    - macos
+  stage: test
+  script:
+    - python3 -m venv venv
+    - source venv/bin/activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID
+
+# Test on macOS with Python 3.12
+test:macos-python3.12:
+  tags:
+    - macos
+  stage: test
+  script:
+    - python3 -m venv venv
+    - source venv/bin/activate
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+  variables:
+    SECRET_KEY: $SECRET_KEY
+    MAILCHIMP_API_KEY: $MAILCHIMP_API_KEY
+    MAILCHIMP_DATA_CENTER: $MAILCHIMP_DATA_CENTER
+    MAILCHIMP_EMAIL_LIST_ID: $MAILCHIMP_EMAIL_LIST_ID

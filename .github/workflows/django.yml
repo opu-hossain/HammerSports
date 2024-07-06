@@ -27,10 +27,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install PostgreSQL on macOS
-      if: runner.os == 'macOS'
-      run: brew install postgresql
-
     - name: Check Python Version
       run: python --version
 
