@@ -343,11 +343,16 @@ def Blog_details(request, slug):
                     post=post,
                 )
                 comment.save()
-                if url_has_allowed_host_and_scheme(url=request.path_info, allowed_hosts={request.get_host()}):
-                    return HttpResponseRedirect(request.path_info)
+                redirect_url = request.POST.get('next', request.path_info)  # Get a redirect parameter from POST data
+                if url_has_allowed_host_and_scheme(
+                    url=redirect_url,
+                    allowed_hosts={request.get_host()}
+                ):
+                    return HttpResponseRedirect(redirect_url)
                 else:
-                    # Redirect to a safe default page if the URL is not safe
+                        # Redirect to a safe default page if the URL is not safe
                     return redirect('Blog_index')
+
 
         # Get the list of approved comments
         comments = Comment.objects.filter(approved=True, post=post)

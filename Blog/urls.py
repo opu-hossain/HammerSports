@@ -23,9 +23,9 @@ urlpatterns = [
         "post/<slug:slug>/comment/create/", views.comment_create, name="comment_create"
     ),
     # Approve a comment
-    path("comment/<int:id>/approve/", views.comment_approve, name="comment_approve"),
+    path("comment/<int:comment_id>/approve/", views.comment_approve, name="comment_approve"),
     # Approve a reply
-    path("reply/<int:id>/approve/", views.reply_approve, name="reply_approve"),
+    path("reply/<int:comment_id>/approve/", views.reply_approve, name="reply_approve"),
     # Create a new blog post
     path("create_post/", views.create_blog_post, name="create_blog_post"),
     # Approve a blog post

@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.urls import reverse , reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponseServerError, Http404
 from django.utils.http import url_has_allowed_host_and_scheme
+from urllib.parse import urlparse
 
 
 
@@ -401,7 +402,7 @@ def follow_user(request, username):
         username (str): The username of the user to follow.
 
     Returns:
-        HttpResponseRedirect: A redirect to the referrer page.
+        HttpResponseRedirect: A redirect to the referrer page or a default page if referrer is not safe.
 
     Raises:
         Http404: If the user to follow does not exist.
@@ -422,8 +423,15 @@ def follow_user(request, username):
         # Display a success message to the user
         messages.success(request, f"You are now following {username}!")
 
-    # Redirect the user to the page they were on before
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # Validate the HTTP_REFERER
+    referrer = request.META.get('HTTP_REFERER')
+    if referrer:
+        netloc = urlparse(referrer).netloc
+        if netloc and netloc == request.get_host():
+            return HttpResponseRedirect(referrer)
+    
+    # If referrer is not present or not safe, redirect to a default page (e.g., home page)
+    return HttpResponseRedirect(reverse('Blog_index'))  
 
 @login_required
 def followers_list(request, username):
