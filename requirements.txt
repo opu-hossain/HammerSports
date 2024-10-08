@@ -8,7 +8,7 @@ certifi==2024.7.4
 charset-normalizer==3.3.2
 decorator==5.1.1
 defusedxml==0.7.1
-Django==5.0.8
+Django==5.0.9
 django-axes==6.4.0
 django-ckeditor==6.7.1
 django-ckeditor-5==0.2.13
