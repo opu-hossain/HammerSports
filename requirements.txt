@@ -19,7 +19,7 @@ docopt==0.6.2
 executing==2.0.1
 fastjsonschema==2.19.1
 fontawesomefree==6.5.1
-idna==3.7
+idna==3.15
 ipython==8.12.3
 jedi==0.19.1
 Jinja2==3.1.6
